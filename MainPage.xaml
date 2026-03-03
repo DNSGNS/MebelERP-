@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyApp1.MainPage"
+             Title="ERP СИСТЕМА"
+             BackgroundColor="#F0F0F0">
+
+    <Grid RowDefinitions="Auto, *" Padding="20">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,10">
+            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                <Label Text="ГЛАВНОЕ МЕНЮ" FontSize="20" FontAttributes="Bold" TextColor="#2B3C51"/>
+                <Label Text="Управление производством" FontSize="11" TextColor="#666"/>
+            </VerticalStackLayout>
+            <Image Grid.Column="1" Source="dotnet_bot.png" HeightRequest="35" Opacity="0.2" VerticalOptions="Start"/>
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="2">
+
+                <VerticalStackLayout x:Name="SectionOperational" IsVisible ="False" Spacing="2">
+                    <Label Text="ОПЕРАТИВНАЯ РАБОТА" FontSize="10" FontAttributes="Bold" TextColor="#2B3C51" Margin="5,10,0,0"/>
+                    <VerticalStackLayout x:Name="ContainerOperational" Spacing="0"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout x:Name="SectionProjects" IsVisible ="False" Spacing="2">
+                    <Label Text="УПРАВЛЕНИЕ ПРОЕКТАМИ" FontSize="10" FontAttributes="Bold" TextColor="#6750A4" Margin="5,15,0,0"/>
+                    <VerticalStackLayout x:Name="ContainerProjects" Spacing="0"/>
+                </VerticalStackLayout>
+
+              
+                <VerticalStackLayout x:Name="SectionReports" IsVisible ="False" Spacing="2">
+                    <Label Text="ОТЧЕТЫ И ПРОИЗВОДСТВО" FontSize="10" FontAttributes="Bold" TextColor="#2B3C51" Margin="5,15,0,0"/>
+                    <VerticalStackLayout x:Name="ContainerReports" Spacing="0"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout x:Name="SectionSystem" IsVisible ="False" Spacing="2">
+                    <Label Text="СИСТЕМА" FontSize="10" FontAttributes="Bold" TextColor="#666" Margin="5,15,0,0"/>
+                    <VerticalStackLayout x:Name="ContainerSystem" Spacing="0"/>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>

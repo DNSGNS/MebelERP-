@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+             x:Class="MyApp1.CuttingEdgeContentView">
+
+    <Grid RowDefinitions="Auto, *" Padding="20" RowSpacing="15">
+
+        <Frame Grid.Row="0" BackgroundColor="#6750A4" CornerRadius="12" Padding="10" HasShadow="False" BorderColor="Transparent">
+            <Grid ColumnDefinitions="*, Auto, *">
+                <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                    <Label Text="2мм" TextColor="#EADDFF" FontSize="11" HorizontalTextAlignment="Center"/>
+                    <Label Text="{Binding TotalEdge1, StringFormat='{0:F2} м'}" TextColor="White" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+
+                <BoxView Grid.Column="1" WidthRequest="1" Color="#EADDFF" VerticalOptions="Fill" Margin="10,2"/>
+
+                <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                    <Label Text="1мм" TextColor="#EADDFF" FontSize="11" HorizontalTextAlignment="Center"/>
+                    <Label Text="{Binding TotalEdge2, StringFormat='{0:F2} м'}" TextColor="White" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Frame>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding DetailsForm.Details}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:CuttingDetails">
+                    <Frame BackgroundColor="White" 
+                           HasShadow="False" 
+                           BorderColor="#CAC4D0" 
+                           CornerRadius="12" 
+                           Margin="0,0,0,15" 
+                           Padding="12">
+                        <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+
+                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                                <Label Text="{Binding Id, StringFormat='Деталь №{0}'}" FontSize="11" FontAttributes="Bold" TextColor="#6750A4"/>
+
+                                <Grid ColumnDefinitions="*, Auto, *, Auto, Auto" ColumnSpacing="8">
+
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                                        <Label Text="{Binding Length}" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#1C1B1F" />
+
+                                        <shapes:Line X2="1" Aspect="Fill" StrokeThickness="2" IsVisible="False">
+                                            <shapes:Line.Triggers>
+                                                <DataTrigger TargetType="shapes:Line" Binding="{Binding E1L1}" Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                    <Setter Property="Stroke" Value="#6750A4" />
+                                                    <Setter Property="StrokeDashArray" Value="" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="shapes:Line" Binding="{Binding E2L1}" Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                    <Setter Property="Stroke" Value="#2B3C51" />
+                                                    <Setter Property="StrokeDashArray" Value="3,1" />
+                                                </DataTrigger>
+                                            </shapes:Line.Triggers>
+                                        </shapes:Line>
+
+                                        <shapes:Line X2="1" Aspect="Fill" StrokeThickness="2" IsVisible="False">
+                                            <shapes:Line.Triggers>
+                                                <DataTrigger TargetType="shapes:Line" Binding="{Binding E1L2}" Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                    <Setter Property="Stroke" Value="#6750A4" />
+                                                    <Setter Property="StrokeDashArray" Value="" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="shapes:Line" Binding="{Binding E2L2}" Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                    <Setter Property="Stroke" Value="#2B3C51" />
+                                                    <Setter Property="StrokeDashArray" Value="3,1" />
+                                                </DataTrigger>
+                                            </shapes:Line.Triggers>
+                                        </shapes:Line>
+                                    </VerticalStackLayout>
+
+                                    <Label Grid.Column="1" Text="×" FontSize="12" TextColor="#6750A4" VerticalOptions="Center" FontAttributes="Bold"/>
+
+                                    <VerticalStackLayout Grid.Column="2" Spacing="2" VerticalOptions="Center">
+                                        <Label Text="{Binding Width}" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#1C1B1F"/>
+
+                                        <shapes:Line X2="1" Aspect="Fill" StrokeThickness="2" IsVisible="False">
+                                            <shapes:Line.Triggers>
+                                                <DataTrigger TargetType="shapes:Line" Binding="{Binding E1W1}" Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                    <Setter Property="Stroke" Value="#6750A4" />
+                                                    <Setter Property="StrokeDashArray" Value="" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="shapes:Line" Binding="{Binding E2W1}" Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                    <Setter Property="Stroke" Value="#2B3C51" />
+                                                    <Setter Property="StrokeDashArray" Value="3,1" />
+                                                </DataTrigger>
+                                            </shapes:Line.Triggers>
+                                        </shapes:Line>
+
+                                        <shapes:Line X2="1" Aspect="Fill" StrokeThickness="2" IsVisible="False">
+                                            <shapes:Line.Triggers>
+                                                <DataTrigger TargetType="shapes:Line" Binding="{Binding E1W2}" Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                    <Setter Property="Stroke" Value="#6750A4" />
+                                                    <Setter Property="StrokeDashArray" Value="" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="shapes:Line" Binding="{Binding E2W2}" Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                    <Setter Property="Stroke" Value="#2B3C51" />
+                                                    <Setter Property="StrokeDashArray" Value="3,1" />
+                                                </DataTrigger>
+                                            </shapes:Line.Triggers>
+                                        </shapes:Line>
+                                    </VerticalStackLayout>
+
+                                    <Label Grid.Column="3" Text="—" FontSize="12" TextColor="Gray" VerticalOptions="Center"/>
+                                    <Label Grid.Column="4" Text="{Binding Count}" FontSize="14" FontAttributes="Bold" TextColor="#6750A4" VerticalOptions="Center"/>
+                                </Grid>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                <Grid ColumnDefinitions="45, 30, 30, 30, 30" Margin="0,0,0,2">
+                                    <Label Grid.Column="1" Text="д1" FontSize="9" HorizontalOptions="Center" TextColor="Gray" FontAttributes="Bold"/>
+                                    <Label Grid.Column="2" Text="д2" FontSize="9" HorizontalOptions="Center" TextColor="Gray" FontAttributes="Bold"/>
+                                    <Label Grid.Column="3" Text="ш1" FontSize="9" HorizontalOptions="Center" TextColor="Gray" FontAttributes="Bold"/>
+                                    <Label Grid.Column="4" Text="ш2" FontSize="9" HorizontalOptions="Center" TextColor="Gray" FontAttributes="Bold"/>
+                                </Grid>
+
+                                <Grid ColumnDefinitions="45, 30, 30, 30, 30">
+                                    <Label Grid.Column="0" Text="2 mm" VerticalOptions="Center" FontSize="10" TextColor="#6750A4" FontAttributes="Bold"/>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding E1L1}" Color="#6750A4" Scale="0.7"/>
+                                    <CheckBox Grid.Column="2" IsChecked="{Binding E1L2}" Color="#6750A4" Scale="0.7"/>
+                                    <CheckBox Grid.Column="3" IsChecked="{Binding E1W1}" Color="#6750A4" Scale="0.7"/>
+                                    <CheckBox Grid.Column="4" IsChecked="{Binding E1W2}" Color="#6750A4" Scale="0.7"/>
+                                </Grid>
+
+                                <Grid ColumnDefinitions="45, 30, 30, 30, 30">
+                                    <Label Grid.Column="0" Text="1 mm" VerticalOptions="Center" FontSize="10" TextColor="#2B3C51" FontAttributes="Bold"/>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding E2L1}" Color="#2B3C51" Scale="0.7"/>
+                                    <CheckBox Grid.Column="2" IsChecked="{Binding E2L2}" Color="#2B3C51" Scale="0.7"/>
+                                    <CheckBox Grid.Column="3" IsChecked="{Binding E2W1}" Color="#2B3C51" Scale="0.7"/>
+                                    <CheckBox Grid.Column="4" IsChecked="{Binding E2W2}" Color="#2B3C51" Scale="0.7"/>
+                                </Grid>
+                            </VerticalStackLayout>
+
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentView>

@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyApp1</name>
+    </assembly>
+    <members>
+        <member name="M:MyApp1.LDSPContentView.OnBindingContextChanged">
+            <summary>
+            Метод вызывается при установке BindingContext (передаче данных в View)
+            </summary>
+        </member>
+        <member name="M:MyApp1.LDSPWarehouseContentView.OnBindingContextChanged">
+            <summary>
+            Метод вызывается при установке BindingContext (передаче данных в View)
+            </summary>
+        </member>
+        <member name="M:MyApp1.ProjectData.RecalculateTotals">
+            <summary>
+            Суммирует все поля Furniture из каждого ObjectData, Пересчитывает все стоимостные показатели проекта.
+            </summary>
+        </member>
+        <member name="M:MyApp1.DoorSlimLineForm.#ctor(MyApp1.DoorDetail)">
+            <summary>
+            Конструктор для инициализации формы из модели данных (режим просмотра/редактирования)
+            </summary>
+            <param name="detail">Объект данных из БД</param>
+        </member>
+        <member name="P:MyApp1.DoorSlimLineForm.SelectedInstallationTypeIndex">
+            <summary>
+            Вариант установки дверей
+            </summary>
+        </member>
+        <member name="P:MyApp1.DoorSlimLineForm.OpeningHeight">
+            <summary>
+            Высота проёма
+            </summary>
+        </member>
+        <member name="P:MyApp1.DoorSlimLineForm.OpeningWidth">
+            <summary>
+            Ширина проема
+            </summary>
+        </member>
+        <member name="P:MyApp1.DoorSlimLineForm.SelectedArrangementIndex">
+            <summary>
+            Расположение дверей
+            </summary>
+        </member>
+        <member name="P:MyApp1.DoorSlimLineForm.SelectedColorIndex">
+            <summary>
+            Цвет профиля
+            </summary>
+        </member>
+        <member name="P:MyApp1.DoorSlimLineForm.MiddleFramesCountIndex">
+            <summary>
+            Количество средних рамок (от 0 до 4)
+            </summary>
+        </member>
+        <member name="P:MyApp1.DoorSlimLineForm.DoorsCount">
+            <summary>
+            Количество дверей
+            </summary>
+        </member>
+        <member name="P:MyApp1.DoorSlimLineForm.OverlapsCount">
+            <summary>
+            Количество перекрытий
+            </summary>
+        </member>
+        <member name="M:MyApp1.DoorSlimLineForm.CalculateDoorsCount">
+            <summary>
+            Рассчитывает количество дверей на основе выбранной схемы расположения
+            Формула: =ЕСЛИ(E12=U4;2;ЕСЛИ(E12=U5;3;ЕСЛИ(E12=U6;4;ЕСЛИ(E12=U7;4;ЕСЛИ(E12=U8;5)))))
+            </summary>
+        </member>
+        <member name="M:MyApp1.DoorSlimLineForm.CalculateOverlapsCount">
+            <summary>
+            Рассчитывает количество перекрытий на основе выбранной схемы расположения
+            Формула: =ЕСЛИ(E12=U4;1;ЕСЛИ(E12=U5;2;ЕСЛИ(E12=U6;3;ЕСЛИ(E12=U7;2;ЕСЛИ(E12=U8;4)))))
+            </summary>
+        </member>
+        <member name="M:MyApp1.DoorSlimLineForm.CalculateDoorHeight">
+            <summary>
+            Рассчитывает высоту двери на основе типа установки
+            Формула (упрощенная, без учета врезной направляющей):
+            Видимый верхний трек: OpeningHeight - 39
+            Скрытый верхний трек, корпус: OpeningHeight + 12  
+            Скрытый верхний трек, проем: OpeningHeight - 28
+            </summary>
+        </member>
+        <member name="M:MyApp1.DoorSlimLineForm.CalculateDoorWidth">
+            <summary>
+            Рассчитывает ширину двери
+            Формула из AC34 (упрощенная, с учетом что элемент всегда Шлегель)
+            </summary>
+        </member>
+        <member name="M:MyApp1.DoorSlimLineForm.CalculateInsertWidth(System.Int32)">
+            <summary>
+            Рассчитывает ширину вставки на основе материала
+            Формула: =ЕСЛИ(C36=$U$12;$L$8-ЕСЛИ(D8=AB34;AF34;AF35);
+                       ЕСЛИ(C36=$U$13;$L$8-ЕСЛИ(D8=AB34;AF34;AF35)-2;
+                       $L$8-ЕСЛИ(D8=AB34;AF34;AF35)-3))
+            </summary>
+            <param name="materialIndex">Индекс материала (0 - ЛДСП10, 1 - Стекло)</param>
+        </member>
+        <member name="M:MyApp1.DoorSlimLineForm.CalculateFirstInsertHeight">
+            <summary>
+            Рассчитывает высоту первой вставки автоматически
+            </summary>
+        </member>
+        <member name="P:MyApp1.DoorWorkshopItem.Data">
+            <summary>
+            Данные самой двери (наполнение, количество, вставки)
+            </summary>
+        </member>
+        <member name="P:MyApp1.DoorWorkshopItem.DoorSummary">
+            <summary>
+            Вспомогательное свойство для отображения в списке задач
+            </summary>
+        </member>
+        <member name="F:MyApp1.DoorWorkshopItem._profileSystem">
+            <summary>
+            Можно добавить тип профиля или системы, если это важно для заголовка задачи
+            </summary>
+        </member>
+        <member name="M:MyApp1.LDSPPage.CalculateTotalArea">
+            <summary>
+            Метод пересчета общей площади
+            </summary>
+        </member>
+        <member name="M:MyApp1.LDSPPage.OnFormPropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Срабатывает, когда внутри любой карточки изменилось число
+            </summary>
+        </member>
+        <member name="M:MyApp1.LDSPPage.OnFormsCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Срабатывает при добавлении или удалении карточек из списка
+            </summary>
+        </member>
+        <member name="M:MyApp1.ApiService.SaveProjectToDbAsync(MyApp1.Project)">
+            <summary>
+            Пытается обновить проект. Если его нет (404) — создает новый.
+            </summary>
+        </member>
+        <member name="M:MyApp1.ApiService.GetInstallationPlanningDataAsync">
+            <summary>
+            Получает данные для планирования установок: проекты, всех рабочих и распределенных рабочих.
+            </summary>
+        </member>
+        <member name="T:MyApp1.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Maui.Controls.ColorAnimationExtensions_Button.TextColorTo(Microsoft.Maui.Controls.Button,Microsoft.Maui.Graphics.Color,System.UInt32,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationToken)">
+            <summary>
+            Animates the TextColor of an <see cref = "T:Microsoft.Maui.ITextStyle"/> to the given color
+            </summary>
+            <param name = "element"></param>
+            <param name = "color">The target color to animate the <see cref = "P:Microsoft.Maui.ITextStyle.TextColor"/> to</param>
+            <param name = "rate">The time, in milliseconds, between the frames of the animation</param>
+            <param name = "length">The duration, in milliseconds, of the animation</param>
+            <param name = "easing">The easing function to be used in the animation</param>
+            <param name = "token"><see cref = "T:System.Threading.CancellationToken"/></param>
+            <returns>Value indicating if the animation completed successfully or not</returns>
+        </member>
+        <member name="M:Microsoft.Maui.Controls.ColorAnimationExtensions_DatePicker.TextColorTo(Microsoft.Maui.Controls.DatePicker,Microsoft.Maui.Graphics.Color,System.UInt32,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationToken)">
+            <summary>
+            Animates the TextColor of an <see cref = "T:Microsoft.Maui.ITextStyle"/> to the given color
+            </summary>
+            <param name = "element"></param>
+            <param name = "color">The target color to animate the <see cref = "P:Microsoft.Maui.ITextStyle.TextColor"/> to</param>
+            <param name = "rate">The time, in milliseconds, between the frames of the animation</param>
+            <param name = "length">The duration, in milliseconds, of the animation</param>
+            <param name = "easing">The easing function to be used in the animation</param>
+            <param name = "token"><see cref = "T:System.Threading.CancellationToken"/></param>
+            <returns>Value indicating if the animation completed successfully or not</returns>
+        </member>
+        <member name="M:Microsoft.Maui.Controls.ColorAnimationExtensions_Editor.TextColorTo(Microsoft.Maui.Controls.Editor,Microsoft.Maui.Graphics.Color,System.UInt32,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationToken)">
+            <summary>
+            Animates the TextColor of an <see cref = "T:Microsoft.Maui.ITextStyle"/> to the given color
+            </summary>
+            <param name = "element"></param>
+            <param name = "color">The target color to animate the <see cref = "P:Microsoft.Maui.ITextStyle.TextColor"/> to</param>
+            <param name = "rate">The time, in milliseconds, between the frames of the animation</param>
+            <param name = "length">The duration, in milliseconds, of the animation</param>
+            <param name = "easing">The easing function to be used in the animation</param>
+            <param name = "token"><see cref = "T:System.Threading.CancellationToken"/></param>
+            <returns>Value indicating if the animation completed successfully or not</returns>
+        </member>
+        <member name="M:Microsoft.Maui.Controls.ColorAnimationExtensions_Entry.TextColorTo(Microsoft.Maui.Controls.Entry,Microsoft.Maui.Graphics.Color,System.UInt32,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationToken)">
+            <summary>
+            Animates the TextColor of an <see cref = "T:Microsoft.Maui.ITextStyle"/> to the given color
+            </summary>
+            <param name = "element"></param>
+            <param name = "color">The target color to animate the <see cref = "P:Microsoft.Maui.ITextStyle.TextColor"/> to</param>
+            <param name = "rate">The time, in milliseconds, between the frames of the animation</param>
+            <param name = "length">The duration, in milliseconds, of the animation</param>
+            <param name = "easing">The easing function to be used in the animation</param>
+            <param name = "token"><see cref = "T:System.Threading.CancellationToken"/></param>
+            <returns>Value indicating if the animation completed successfully or not</returns>
+        </member>
+        <member name="M:Microsoft.Maui.Controls.ColorAnimationExtensions_InputView.TextColorTo(Microsoft.Maui.Controls.InputView,Microsoft.Maui.Graphics.Color,System.UInt32,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationToken)">
+            <summary>
+            Animates the TextColor of an <see cref = "T:Microsoft.Maui.ITextStyle"/> to the given color
+            </summary>
+            <param name = "element"></param>
+            <param name = "color">The target color to animate the <see cref = "P:Microsoft.Maui.ITextStyle.TextColor"/> to</param>
+            <param name = "rate">The time, in milliseconds, between the frames of the animation</param>
+            <param name = "length">The duration, in milliseconds, of the animation</param>
+            <param name = "easing">The easing function to be used in the animation</param>
+            <param name = "token"><see cref = "T:System.Threading.CancellationToken"/></param>
+            <returns>Value indicating if the animation completed successfully or not</returns>
+        </member>
+        <member name="M:Microsoft.Maui.Controls.ColorAnimationExtensions_Label.TextColorTo(Microsoft.Maui.Controls.Label,Microsoft.Maui.Graphics.Color,System.UInt32,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationToken)">
+            <summary>
+            Animates the TextColor of an <see cref = "T:Microsoft.Maui.ITextStyle"/> to the given color
+            </summary>
+            <param name = "element"></param>
+            <param name = "color">The target color to animate the <see cref = "P:Microsoft.Maui.ITextStyle.TextColor"/> to</param>
+            <param name = "rate">The time, in milliseconds, between the frames of the animation</param>
+            <param name = "length">The duration, in milliseconds, of the animation</param>
+            <param name = "easing">The easing function to be used in the animation</param>
+            <param name = "token"><see cref = "T:System.Threading.CancellationToken"/></param>
+            <returns>Value indicating if the animation completed successfully or not</returns>
+        </member>
+        <member name="M:Microsoft.Maui.Controls.ColorAnimationExtensions_Picker.TextColorTo(Microsoft.Maui.Controls.Picker,Microsoft.Maui.Graphics.Color,System.UInt32,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationToken)">
+            <summary>
+            Animates the TextColor of an <see cref = "T:Microsoft.Maui.ITextStyle"/> to the given color
+            </summary>
+            <param name = "element"></param>
+            <param name = "color">The target color to animate the <see cref = "P:Microsoft.Maui.ITextStyle.TextColor"/> to</param>
+            <param name = "rate">The time, in milliseconds, between the frames of the animation</param>
+            <param name = "length">The duration, in milliseconds, of the animation</param>
+            <param name = "easing">The easing function to be used in the animation</param>
+            <param name = "token"><see cref = "T:System.Threading.CancellationToken"/></param>
+            <returns>Value indicating if the animation completed successfully or not</returns>
+        </member>
+        <member name="M:Microsoft.Maui.Controls.ColorAnimationExtensions_RadioButton.TextColorTo(Microsoft.Maui.Controls.RadioButton,Microsoft.Maui.Graphics.Color,System.UInt32,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationToken)">
+            <summary>
+            Animates the TextColor of an <see cref = "T:Microsoft.Maui.ITextStyle"/> to the given color
+            </summary>
+            <param name = "element"></param>
+            <param name = "color">The target color to animate the <see cref = "P:Microsoft.Maui.ITextStyle.TextColor"/> to</param>
+            <param name = "rate">The time, in milliseconds, between the frames of the animation</param>
+            <param name = "length">The duration, in milliseconds, of the animation</param>
+            <param name = "easing">The easing function to be used in the animation</param>
+            <param name = "token"><see cref = "T:System.Threading.CancellationToken"/></param>
+            <returns>Value indicating if the animation completed successfully or not</returns>
+        </member>
+        <member name="M:Microsoft.Maui.Controls.ColorAnimationExtensions_SearchBar.TextColorTo(Microsoft.Maui.Controls.SearchBar,Microsoft.Maui.Graphics.Color,System.UInt32,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationToken)">
+            <summary>
+            Animates the TextColor of an <see cref = "T:Microsoft.Maui.ITextStyle"/> to the given color
+            </summary>
+            <param name = "element"></param>
+            <param name = "color">The target color to animate the <see cref = "P:Microsoft.Maui.ITextStyle.TextColor"/> to</param>
+            <param name = "rate">The time, in milliseconds, between the frames of the animation</param>
+            <param name = "length">The duration, in milliseconds, of the animation</param>
+            <param name = "easing">The easing function to be used in the animation</param>
+            <param name = "token"><see cref = "T:System.Threading.CancellationToken"/></param>
+            <returns>Value indicating if the animation completed successfully or not</returns>
+        </member>
+        <member name="M:Microsoft.Maui.Controls.ColorAnimationExtensions_TimePicker.TextColorTo(Microsoft.Maui.Controls.TimePicker,Microsoft.Maui.Graphics.Color,System.UInt32,System.UInt32,Microsoft.Maui.Easing,System.Threading.CancellationToken)">
+            <summary>
+            Animates the TextColor of an <see cref = "T:Microsoft.Maui.ITextStyle"/> to the given color
+            </summary>
+            <param name = "element"></param>
+            <param name = "color">The target color to animate the <see cref = "P:Microsoft.Maui.ITextStyle.TextColor"/> to</param>
+            <param name = "rate">The time, in milliseconds, between the frames of the animation</param>
+            <param name = "length">The duration, in milliseconds, of the animation</param>
+            <param name = "easing">The easing function to be used in the animation</param>
+            <param name = "token"><see cref = "T:System.Threading.CancellationToken"/></param>
+            <returns>Value indicating if the animation completed successfully or not</returns>
+        </member>
+    </members>
+</doc>

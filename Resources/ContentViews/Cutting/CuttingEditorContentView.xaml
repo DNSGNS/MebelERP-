@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.CuttingEditorContentView"
+             BackgroundColor="White">
+
+    <ContentView.Resources>
+        <local:SheetDisplayConverter x:Key="SheetDisplayConverter"/>
+    </ContentView.Resources>
+
+    <Grid RowDefinitions="Auto, *, Auto">
+
+        <ScrollView Grid.Row="0" Orientation="Horizontal" HorizontalScrollBarVisibility="Default" BackgroundColor="#F5F5F5">
+            <HorizontalStackLayout Spacing="8" Padding="10">
+
+                <Button Text="🔄 Поворот" 
+                Clicked="OnRotateClicked" 
+                IsEnabled="{Binding LastEdit.IsPartSelected}" 
+                BackgroundColor="#6750A4" 
+                TextColor="White"
+                HeightRequest="40"/>
+
+                <BoxView WidthRequest="1" Color="LightGray" Margin="0,5"/>
+
+                <Button Clicked="OnMergeModeClicked"
+                TextColor="White"
+                FontSize="12"
+                HeightRequest="40">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding LastEdit.IsMergingMode}" Value="False">
+                            <Setter Property="Text" Value="🔗 Объединить" />
+                            <Setter Property="BackgroundColor" Value="#6750A4" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding LastEdit.IsMergingMode}" Value="True">
+                            <Setter Property="Text" Value="✅ Готово" />
+                            <Setter Property="BackgroundColor" Value="#FF8C00" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <BoxView WidthRequest="1" Color="LightGray" Margin="0,5"/>
+
+                <Border Stroke="Gray" StrokeThickness="1" StrokeShape="RoundRectangle 5" BackgroundColor="White" Padding="5,0">
+                    <Picker ItemsSource="{Binding LastEdit.Sheets}"
+                            ItemDisplayBinding="{Binding DisplayName}"
+                            SelectedItem="{Binding LastEdit.SelectedSheet, Mode=TwoWay}"
+                            WidthRequest="130"
+                            VerticalOptions="Center"
+                            TextColor="Black"/>
+                </Border>
+
+                <Button Text="➕" 
+                Clicked="OnAddSheetClicked"
+                BackgroundColor="#4CAF50" 
+                TextColor="White" 
+                WidthRequest="50"
+                HeightRequest="40"
+                ToolTipProperties.Text="Добавить лист"/>
+
+                <Button Text="🗑" 
+                Clicked="OnRemoveSheetClicked"
+                BackgroundColor="#B3261E" 
+                TextColor="White" 
+                WidthRequest="50"
+                HeightRequest="40"
+                ToolTipProperties.Text="Удалить лист и вернуть детали"/>
+
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="1">
+            <Grid.GestureRecognizers>
+                <DropGestureRecognizer AllowDrop="True" Drop="OnCanvasDrop" />
+            </Grid.GestureRecognizers>
+
+            <GraphicsView x:Name="EditorCanvas"
+                  Drawable="{Binding LastEdit.EditorDrawable}"
+                  HorizontalOptions="Fill"
+                  VerticalOptions="Fill"
+                  InputTransparent="False" 
+                  StartInteraction="OnCanvasStartInteraction"
+                  DragInteraction="OnCanvasDragInteraction"
+                  EndInteraction="OnCanvasEndInteraction" />
+        </Grid>
+
+        <Border Grid.Row="2" HeightRequest="160" Stroke="#6750A4" StrokeThickness="2" Margin="5" StrokeShape="RoundRectangle 10">
+            <Grid RowDefinitions="Auto, *">
+                <Label Text="Склад (перетащите деталь на лист)" 
+                       FontSize="11" 
+                       TextColor="#6750A4"
+                       HorizontalOptions="Center" 
+                       Margin="0,5,0,0"
+                       FontAttributes="Bold"/>
+
+                <CollectionView Grid.Row="1" 
+                ItemsSource="{Binding LastEdit.StorageItems}" 
+                ItemsLayout="HorizontalList" 
+                EmptyView="Склад пуст"
+                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="8" 
+                  WidthRequest="100" 
+                  HeightRequest="110" 
+                  BackgroundColor="Transparent">
+                                <Grid.GestureRecognizers>
+                                    <DragGestureRecognizer CanDrag="True" DragStarting="OnPartDragStarting" />
+                                    
+                                    <TapGestureRecognizer Tapped="OnStoragePartTapped" NumberOfTapsRequired="1" />
+                                </Grid.GestureRecognizers>
+
+                                <Border StrokeShape="RoundRectangle 8" 
+                        Stroke="#CAC4D0" 
+                        StrokeThickness="1" 
+                        BackgroundColor="White"
+                        InputTransparent="True">
+                                    <Grid>
+                                        <GraphicsView Drawable="{Binding Preview}" 
+                                      InputTransparent="True" 
+                                      HeightRequest="80" 
+                                      WidthRequest="80"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"/>
+
+                                        <Border BackgroundColor="#B3261E" 
+                                                StrokeShape="RoundRectangle 10" 
+                                                HeightRequest="22" 
+                                                MinimumWidthRequest="22"
+                                                HorizontalOptions="End" 
+                                                VerticalOptions="Start" 
+                                                Margin="-5,-5,0,0"
+                                                Padding="4,0"
+                                                InputTransparent="True">
+                                            <Label Text="{Binding Count}" 
+                                                   TextColor="White" 
+                                                   FontSize="12" 
+                                                   FontAttributes="Bold"
+                                                   HorizontalOptions="Center" 
+                                                   VerticalOptions="Center"/>
+                                        </Border>
+
+                                        <Label Text="{Binding DetailId, StringFormat='ID: {0}'}" 
+                               FontSize="10" 
+                               TextColor="Gray"
+                               VerticalOptions="End"
+                               HorizontalOptions="Center"
+                               Margin="0,0,0,2"
+                               InputTransparent="True"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentView>

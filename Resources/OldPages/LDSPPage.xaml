@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.LDSPPage"
+             BackgroundColor="#FBF8FF"
+             Title="Детали ЛДСП">
+
+    <Grid RowDefinitions="Auto, Auto, *, Auto" Padding="20" RowSpacing="15">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+            <Label Text="ЛДСП" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   TextColor="#312E35"
+                   VerticalOptions="Center"/>
+
+            <Button Grid.Column="1"
+                    Text="+"
+                    FontSize="26"
+                    BackgroundColor="#6750A4"
+                    TextColor="White"
+                    CornerRadius="15"
+                    HeightRequest="50"
+                    WidthRequest="60"
+                    Clicked="OnAddFormClicked"/>
+        </Grid>
+
+        <HorizontalStackLayout Grid.Row="1" Spacing="8">
+            <Label Text="Итоговая площадь:" FontSize="16" TextColor="#49454F"/>
+            <Label Text="{Binding TotalArea, StringFormat='{0:F3} м²'}" 
+                   FontSize="16" 
+                   FontAttributes="Bold" 
+                   TextColor="#1C1B1F"/>
+        </HorizontalStackLayout>
+
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Forms}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:LDSPForm">
+                    <Frame BackgroundColor="White" 
+                           HasShadow="True" 
+                           BorderColor="Transparent"
+                           CornerRadius="12" 
+                           Margin="0,0,0,15" 
+                           Padding="15">
+
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*, *, *, Auto" ColumnSpacing="12">
+
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="Длина" FontSize="11" TextColor="#6750A4" 
+                                           HorizontalTextAlignment="Center" FontAttributes="Bold" Margin="0,0,0,2"/>
+                                    <Entry Text="{Binding Length}" 
+                                           Keyboard="Numeric" 
+                                           Placeholder="0"
+                                           TextColor="#1C1B1F"
+                                           BackgroundColor="Transparent" 
+                                           HorizontalTextAlignment="Center"
+                                           FontSize="16"
+                                           HeightRequest="40"
+                                           Focused="OnEntryFocused"/>
+                                    <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label Text="Ширина" FontSize="11" TextColor="#6750A4" 
+                                           HorizontalTextAlignment="Center" FontAttributes="Bold" Margin="0,0,0,2"/>
+                                    <Entry Text="{Binding Width}" 
+                                           Keyboard="Numeric" 
+                                           Placeholder="0"
+                                           TextColor="#1C1B1F"
+                                           BackgroundColor="Transparent" 
+                                           HorizontalTextAlignment="Center"
+                                           FontSize="16"
+                                           HeightRequest="40"
+                                           Focused="OnEntryFocused"/>
+                                    <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Column="2">
+                                    <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" 
+                                           HorizontalTextAlignment="Center" FontAttributes="Bold" Margin="0,0,0,2"/>
+                                    <Entry Text="{Binding Count}" 
+                                           Keyboard="Numeric" 
+                                           Placeholder="0"
+                                           TextColor="#1C1B1F"
+                                           BackgroundColor="Transparent" 
+                                           HorizontalTextAlignment="Center"
+                                           FontSize="16"
+                                           HeightRequest="40"
+                                           Focused="OnEntryFocused"/>
+                                    <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                                </VerticalStackLayout>
+
+                                <Button Grid.Column="3" 
+                                    Text="✕" 
+                                    BackgroundColor="#F2B8B5" 
+                                    TextColor="#601410" 
+                                    HeightRequest="35" 
+                                    WidthRequest="35" 
+                                    CornerRadius="17" 
+                                    Padding="0" 
+                                    VerticalOptions="End" 
+                                    Clicked="OnRemoveFormClicked" 
+                                    CommandParameter="{Binding .}"/>
+                            </Grid>
+
+                            <Label Text="{Binding Area, StringFormat='Площадь: {0:F3} м²'}" 
+                                   FontSize="13" 
+                                   TextColor="#49454F" 
+                                   HorizontalOptions="Start" 
+                                   Margin="5,2,0,0"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="3" 
+                Text="ПЕРЕЙТИ К ФАСАДАМ →" 
+                Clicked="OnNavigateToFasadClicked"
+                BackgroundColor="#2B3C51"
+                TextColor="White"
+                FontAttributes="Bold"
+                FontSize="14"
+                HeightRequest="55"
+                CornerRadius="28"
+                Margin="0,5,0,0"/>
+    </Grid>
+</ContentPage>

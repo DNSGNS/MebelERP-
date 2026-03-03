@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.LDSPContentView">
+
+    <ContentView.Resources>
+        <ColumnDefinitionCollection x:Key="TableColumns">
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="40"/>
+        </ColumnDefinitionCollection>
+    </ContentView.Resources>
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *" Padding="20" RowSpacing="10">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,5">
+            <Label Text="ЛДСП" FontSize="28" FontAttributes="Bold" TextColor="#312E35" VerticalOptions="Center"/>
+            <Button Grid.Column="1" Text="+" FontSize="26" BackgroundColor="#6750A4" TextColor="White" CornerRadius="15" HeightRequest="50" WidthRequest="60" Clicked="OnAddFormClicked"/>
+        </Grid>
+
+        <HorizontalStackLayout Grid.Row="1" Spacing="8" Margin="5,0,0,10">
+            <Label Text="Итоговая площадь:" FontSize="14" TextColor="#49454F" VerticalOptions="Center"/>
+            <Label Text="{Binding TotalArea, Source={RelativeSource AncestorType={x:Type local:LDSPContentView}}, StringFormat='{0:F3} м²'}" FontSize="16" FontAttributes="Bold" TextColor="#1C1B1F" VerticalOptions="Center"/>
+        </HorizontalStackLayout>
+
+        <Grid Grid.Row="2" ColumnDefinitions="{StaticResource TableColumns}" Padding="5,0" ColumnSpacing="5">
+            <Label Grid.Column="0" Text="#" FontSize="12" FontAttributes="Bold" TextColor="Gray" HorizontalOptions="Center"/>
+            <Label Grid.Column="1" Text="Длина" FontSize="12" FontAttributes="Bold" TextColor="#6750A4" HorizontalOptions="Center"/>
+            <Label Grid.Column="3" Text="Ширина" FontSize="12" FontAttributes="Bold" TextColor="#6750A4" HorizontalOptions="Center"/>
+            <Label Grid.Column="4" Text="Кол-во" FontSize="12" FontAttributes="Bold" TextColor="#6750A4" HorizontalOptions="Center"/>
+        </Grid>
+
+        <CollectionView Grid.Row="3" 
+                        x:Name="FormsCollectionView"
+                        ItemsSource="{Binding Forms, Source={RelativeSource AncestorType={x:Type local:LDSPContentView}}}" 
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:LDSPForm">
+                    <Grid RowDefinitions="Auto, 1">
+                        <Grid Grid.Row="0" 
+                              ColumnDefinitions="{StaticResource TableColumns}" 
+                              Padding="2.4" 
+                              ColumnSpacing="5"
+                              VerticalOptions="Center">
+
+                            <Label Grid.Column="0" Text="{Binding Id}" FontSize="14" TextColor="Gray" VerticalOptions="Center" HorizontalOptions="Center"/>
+
+                            <Entry Grid.Column="1"
+                                   Text="{Binding Length}" 
+                                   Keyboard="Numeric" 
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="#1C1B1F"
+                                   FontSize="15" 
+                                   HeightRequest="35"
+                                   ReturnType="Next"
+                                   Focused="OnEntryFocused"
+                                   Loaded="OnLengthEntryLoaded"
+                                   Completed="OnLengthCompleted"/>
+
+                            <Label Grid.Column="2" Text="x" TextColor="#6750A4" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                            <Entry Grid.Column="3"
+                                   Text="{Binding Width}" 
+                                   Keyboard="Numeric" 
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="#1C1B1F"
+                                   FontSize="15" 
+                                   HeightRequest="35"
+                                   ReturnType="Next"
+                                   Focused="OnEntryFocused"
+                                   Completed="OnWidthCompleted"/>
+
+                            <Entry Grid.Column="4"
+                                   Text="{Binding Count}" 
+                                   Keyboard="Numeric" 
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="#1C1B1F"
+                                   FontSize="15" 
+                                   HeightRequest="35"
+                                   ReturnType="Done"
+                                   Focused="OnEntryFocused"
+                                   Completed="OnCountCompleted"/>
+
+                            <Button Grid.Column="5" Text="✕" BackgroundColor="Transparent" TextColor="#B3261E" FontSize="18" HeightRequest="35" WidthRequest="35" Padding="0" VerticalOptions="Center" Clicked="OnRemoveFormClicked" CommandParameter="{Binding .}"/>
+                        </Grid>
+                        <BoxView Grid.Row="1" Color="#E0E0E0" HeightRequest="1" VerticalOptions="End"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.Footer>
+                <BoxView HeightRequest="100" BackgroundColor="Transparent"/>
+            </CollectionView.Footer>
+        </CollectionView>
+    </Grid>
+</ContentView>

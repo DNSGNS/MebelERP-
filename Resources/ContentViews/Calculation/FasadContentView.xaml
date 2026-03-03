@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             xmlns:models="clr-namespace:MyApp1"
+             x:Class="MyApp1.FasadContentView"
+             x:Name="this"
+             VerticalOptions="FillAndExpand"
+             HorizontalOptions="Fill">
+
+    <ContentView.Resources>
+        <local:FasadTypeConverter x:Key="TypeConverter" />
+        <local:FasadEdgeTypeConverter x:Key="EdgeConverter" />
+
+        <Style x:Key="SmallLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="#6750A4"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,-2"/>
+        </Style>
+
+        <Style x:Key="CompactEntryStyle" TargetType="Entry">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="TextColor" Value="#1C1B1F"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HeightRequest" Value="35"/>
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+
+        <Style x:Key="CompactPickerStyle" TargetType="Picker">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="TextColor" Value="#1C1B1F"/>
+            <Setter Property="TitleColor" Value="#6750A4"/>
+            <Setter Property="HeightRequest" Value="35"/>
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+    </ContentView.Resources>
+
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="15" Spacing="15">
+
+                <Label Text="Конструктор фасадов" FontSize="24" FontAttributes="Bold" TextColor="#312E35"/>
+
+                <Frame BackgroundColor="#F3EDF7" BorderColor="#CAC4D0" CornerRadius="12" Padding="10">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Групповое редактирование" FontSize="13" FontAttributes="Bold" TextColor="#6750A4"/>
+                        <Grid ColumnDefinitions="*, *, *" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" Spacing="0">
+                                <Label Text="Тип края" Style="{StaticResource SmallLabelStyle}"/>
+                                <Picker x:Name="BulkEdgePicker" ItemsSource="{Binding BulkEdgeTypes, Source={x:Reference this}}" 
+                                        ItemDisplayBinding="{Binding Converter={StaticResource EdgeConverter}}" 
+                                        Style="{StaticResource CompactPickerStyle}"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="0">
+                                <Label Text="Цвет" Style="{StaticResource SmallLabelStyle}"/>
+                                <Entry x:Name="BulkColorEntry" Placeholder="..." Style="{StaticResource CompactEntryStyle}"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2" Spacing="0">
+                                <Label Text="Фреза" Style="{StaticResource SmallLabelStyle}"/>
+                                <Entry x:Name="BulkMillingEntry" Placeholder="..." Style="{StaticResource CompactEntryStyle}"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                        <Button Text="Применить" Clicked="OnApplyBulkUpdateClicked" 
+                                BackgroundColor="#6750A4" TextColor="White" HeightRequest="38" CornerRadius="8" FontSize="13" Margin="0,5,0,0"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <VerticalStackLayout Spacing="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <BoxView WidthRequest="4" HeightRequest="18" Color="#6750A4" CornerRadius="2"/>
+                        <Label Text="МДФ" FontSize="13" TextColor="#6750A4" FontAttributes="Bold" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding StandardFasads}" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:FasadForm">
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <CheckBox IsChecked="{Binding IsSelected}" VerticalOptions="Center" Color="#6750A4" Margin="-5,0,0,0"/>
+                                    <Frame Grid.Column="1" BackgroundColor="White" BorderColor="#CAC4D0" CornerRadius="10" Padding="8">
+                                        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, *, *, Auto" RowSpacing="2" ColumnSpacing="6">
+
+                                            <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="0">
+                                                <Label Text="Длина" Style="{StaticResource SmallLabelStyle}"/>
+                                                <Entry Text="{Binding Length}" Keyboard="Numeric" Style="{StaticResource CompactEntryStyle}"
+                                                       ReturnType="Next" Completed="OnLengthCompleted" Loaded="OnEntryLoaded" Focused="OnEntryFocused"/>
+                                                <BoxView HeightRequest="1" Color="#6750A4"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="0">
+                                                <Label Text="Ширина" Style="{StaticResource SmallLabelStyle}"/>
+                                                <Entry Text="{Binding Width}" Keyboard="Numeric" Style="{StaticResource CompactEntryStyle}"
+                                                       ReturnType="Next" Completed="OnWidthCompleted" Focused="OnEntryFocused"/><BoxView HeightRequest="1" Color="#6750A4"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="0" Grid.Column="2" Spacing="0">
+                                                <Label Text="Кол-во" Style="{StaticResource SmallLabelStyle}"/>
+                                                <Entry Text="{Binding Count}" Keyboard="Numeric" Style="{StaticResource CompactEntryStyle}"
+                                                       ReturnType="Done" Completed="OnCountCompleted" Focused="OnEntryFocused"/>
+                                                <BoxView HeightRequest="1" Color="#6750A4"/>
+                                            </VerticalStackLayout>
+
+                                            <Button Grid.Row="0" Grid.Column="3" Text="✕" BackgroundColor="#F2B8B5" 
+                                                    Clicked="OnRemoveStandardClicked" CommandParameter="{Binding .}" 
+                                                    HeightRequest="30" WidthRequest="30" Padding="0" CornerRadius="15" VerticalOptions="End" Margin="0,0,0,4"/>
+
+                                            <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="0">
+                                                <Label Text="Тип края" Style="{StaticResource SmallLabelStyle}"/>
+                                                <Picker ItemsSource="{Binding EdgeTypes}" SelectedItem="{Binding SelectedEdgeType}" ItemDisplayBinding="{Binding Converter={StaticResource EdgeConverter}}" Style="{StaticResource CompactPickerStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="0">
+                                                <Label Text="Цвет" Style="{StaticResource SmallLabelStyle}"/>
+                                                <Entry Text="{Binding Color}" Placeholder="-" Style="{StaticResource CompactEntryStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="1" Grid.Column="2" Spacing="0">
+                                                <Label Text="Фреза" Style="{StaticResource SmallLabelStyle}"/>
+                                                <Entry Text="{Binding MillingText}" Placeholder="-" Style="{StaticResource CompactEntryStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                                            </VerticalStackLayout>
+
+                                            <Label Grid.Row="2" Grid.ColumnSpan="4" Text="{Binding Area, StringFormat='S: {0:F3} м²'}" 
+                                                   FontSize="11" TextColor="Gray" HorizontalOptions="End" Margin="0,4,0,0"/>
+                                        </Grid>
+                                    </Frame>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                    <Button Text="+ Добавить стандартный" Clicked="OnAddStandardClicked" BackgroundColor="#6750A4" TextColor="White" CornerRadius="10" HeightRequest="40" FontSize="13"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <BoxView WidthRequest="4" HeightRequest="18" Color="#2B3C51" CornerRadius="2"/>
+                        <Label Text="СПЕЦИАЛЬНЫЕ ДЕТАЛИ / ЛДСП" FontSize="13" TextColor="#2B3C51" FontAttributes="Bold" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding SpecialFasads}" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:FasadForm">
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <CheckBox IsChecked="{Binding IsSelected}" VerticalOptions="Center" Color="#2B3C51" Margin="-5,0,0,0"/>
+                                    <Frame Grid.Column="1" BackgroundColor="White" BorderColor="#2B3C51" CornerRadius="10" Padding="8">
+                                        <Grid RowDefinitions="Auto, Auto, Auto, Auto" ColumnDefinitions="*, *, *, Auto" RowSpacing="2" ColumnSpacing="6">
+
+                                            <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" Spacing="0" Margin="0,0,0,4">
+                                                <Label Text="Тип фасада" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Picker ItemsSource="{Binding SpecialTypes}" SelectedItem="{Binding SelectedType}" 
+                                                        ItemDisplayBinding="{Binding Converter={StaticResource TypeConverter}}" Style="{StaticResource CompactPickerStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#2B3C51"/>
+                                            </VerticalStackLayout>
+
+                                            <Button Grid.Row="0" Grid.Column="3" Text="✕" BackgroundColor="#F2B8B5" 
+                                                    Clicked="OnRemoveSpecialClicked" CommandParameter="{Binding .}" 
+                                                    HeightRequest="30" WidthRequest="30" Padding="0" CornerRadius="15" VerticalOptions="Start"/>
+
+                                            <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="0">
+                                                <Label Text="Длина" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Entry Text="{Binding Length}" Keyboard="Numeric" Style="{StaticResource CompactEntryStyle}"
+                                                        ReturnType="Next" Completed="OnLengthCompleted" Loaded="OnEntryLoaded" Focused="OnEntryFocused"/>
+                                                <BoxView HeightRequest="1" Color="#2B3C51"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="0">
+                                                <Label Text="Ширина" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Entry Text="{Binding Width}" Keyboard="Numeric" Style="{StaticResource CompactEntryStyle}"
+                                                       ReturnType="Next" Completed="OnWidthCompleted" Focused="OnEntryFocused"/>
+                                                <BoxView HeightRequest="1" Color="#2B3C51"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="1" Grid.Column="2" Spacing="0">
+                                                <Label Text="Кол-во" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Entry Text="{Binding Count}" Keyboard="Numeric" Style="{StaticResource CompactEntryStyle}"
+                                                       ReturnType="Done" Completed="OnCountCompleted" Focused="OnEntryFocused"/>
+                                                <BoxView HeightRequest="1" Color="#2B3C51"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="2" Grid.Column="0" Spacing="0">
+                                                <Label Text="Тип края" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Picker ItemsSource="{Binding EdgeTypes}" SelectedItem="{Binding SelectedEdgeType}" ItemDisplayBinding="{Binding Converter={StaticResource EdgeConverter}}" Style="{StaticResource CompactPickerStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="2" Grid.Column="1" Spacing="0">
+                                                <Label Text="Цвет" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Entry Text="{Binding Color}" Placeholder="-" Style="{StaticResource CompactEntryStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="2" Grid.Column="2" Spacing="0">
+                                                <Label Text="Фреза" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Entry Text="{Binding MillingText}" Placeholder="-" Style="{StaticResource CompactEntryStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                                            </VerticalStackLayout>
+
+                                            <Label Grid.Row="3" Grid.ColumnSpan="4" Text="{Binding Area, StringFormat='S: {0:F3} м²'}" 
+                                                   FontSize="11" TextColor="Gray" HorizontalOptions="End" Margin="0,4,0,0"/>
+                                        </Grid>
+                                    </Frame>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                    <Button Text="+ Добавить специальный" Clicked="OnAddSpecialClicked" BackgroundColor="#2B3C51" TextColor="White" CornerRadius="10" HeightRequest="40" FontSize="13"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <BoxView WidthRequest="4" HeightRequest="18" Color="#2B3C51" CornerRadius="2"/>
+                        <Label Text="НЕСТАНДАРТНАЯ ФРЕЗЕРОВКА" FontSize="13" TextColor="#2B3C51" FontAttributes="Bold" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding NonStandardFasads}" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:FasadForm">
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <CheckBox IsChecked="{Binding IsSelected}" VerticalOptions="Center" Color="#2B3C51" Margin="-5,0,0,0"/>
+                                    <Frame Grid.Column="1" BackgroundColor="White" BorderColor="#2B3C51" CornerRadius="10" Padding="8">
+                                        <Grid RowDefinitions="Auto, Auto, Auto, Auto" ColumnDefinitions="*, *, *, Auto" RowSpacing="2" ColumnSpacing="6">
+
+                                            <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" Spacing="0" Margin="0,0,0,4">
+                                                <Label Text="Тип детали" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Picker ItemsSource="{Binding NonStandardTypes}" SelectedItem="{Binding SelectedType}" 
+                                                        ItemDisplayBinding="{Binding Converter={StaticResource TypeConverter}}" IsEnabled="False" Style="{StaticResource CompactPickerStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#2B3C51"/>
+                                            </VerticalStackLayout>
+
+                                            <Button Grid.Row="0" Grid.Column="3" Text="✕" BackgroundColor="#F2B8B5" 
+                                                    Clicked="OnRemoveNonStandardClicked" CommandParameter="{Binding .}" 
+                                                    HeightRequest="30" WidthRequest="30" Padding="0" CornerRadius="15" VerticalOptions="Start"/>
+
+                                            <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="0">
+                                                <Label Text="Длина" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Entry Text="{Binding Length}" Keyboard="Numeric" Style="{StaticResource CompactEntryStyle}"
+                                                       ReturnType="Next" Completed="OnLengthCompleted" Loaded="OnEntryLoaded" Focused="OnEntryFocused"/>
+                                                <BoxView HeightRequest="1" Color="#2B3C51"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="0">
+                                                <Label Text="Ширина" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Entry Text="{Binding Width}" Keyboard="Numeric" Style="{StaticResource CompactEntryStyle}"
+                                                       ReturnType="Next" Completed="OnWidthCompleted" Focused="OnEntryFocused"/>
+                                                <BoxView HeightRequest="1" Color="#2B3C51"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="1" Grid.Column="2" Spacing="0">
+                                                <Label Text="Кол-во" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Entry Text="{Binding Count}" Keyboard="Numeric" Style="{StaticResource CompactEntryStyle}"
+                                                       ReturnType="Done" Completed="OnCountCompleted" Focused="OnEntryFocused"/>
+                                                <BoxView HeightRequest="1" Color="#2B3C51"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="2" Grid.Column="0" Spacing="0">
+                                                <Label Text="Тип края" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Picker ItemsSource="{Binding EdgeTypes}" SelectedItem="{Binding SelectedEdgeType}" ItemDisplayBinding="{Binding Converter={StaticResource EdgeConverter}}" Style="{StaticResource CompactPickerStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="2" Grid.Column="1" Spacing="0">
+                                                <Label Text="Цвет" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Entry Text="{Binding Color}" Placeholder="-" Style="{StaticResource CompactEntryStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Row="2" Grid.Column="2" Spacing="0">
+                                                <Label Text="Фреза" Style="{StaticResource SmallLabelStyle}" TextColor="#2B3C51"/>
+                                                <Entry Text="{Binding MillingText}" Placeholder="-" Style="{StaticResource CompactEntryStyle}"/>
+                                                <BoxView HeightRequest="1" Color="#E0E0E0"/>
+                                            </VerticalStackLayout>
+
+                                            <Label Grid.Row="3" Grid.ColumnSpan="4" Text="{Binding Area, StringFormat='S: {0:F3} м²'}" 
+                                                   FontSize="11" TextColor="Gray" HorizontalOptions="End" Margin="0,4,0,0"/>
+                                        </Grid>
+                                    </Frame>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                    <Button Text="+ Добавить нестандартную" Clicked="OnAddNonStandardClicked" BackgroundColor="#2B3C51" TextColor="White" CornerRadius="10" HeightRequest="40" FontSize="13"/>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentView>

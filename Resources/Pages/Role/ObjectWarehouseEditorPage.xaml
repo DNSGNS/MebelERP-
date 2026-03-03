@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.ObjectWarehouseEditorPage"
+             Title="{Binding ObjectName}"
+             BackgroundColor="#FBF8FF"
+             Padding="0">
+
+    <Grid RowDefinitions="Auto, * , Auto">
+
+        <ScrollView Grid.Row="0" 
+            Orientation="Horizontal" 
+            HorizontalScrollBarVisibility="Never" 
+            BackgroundColor="#2B3C51"
+            HeightRequest="60">
+
+            <HorizontalStackLayout Padding="10,0" Spacing="5" VerticalOptions="Center">
+                <HorizontalStackLayout.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="BackgroundColor" Value="Transparent" />
+                        <Setter Property="TextColor" Value="White" />
+                        <Setter Property="FontAttributes" Value="Bold" />
+                        <Setter Property="FontSize" Value="14" />
+                        <Setter Property="Padding" Value="15,0" />
+                        <Setter Property="HeightRequest" Value="50" />
+                        <Setter Property="MinimumWidthRequest" Value="100" />
+                        <Setter Property="BorderWidth" Value="0" />
+                        <Setter Property="BorderColor" Value="Transparent" />
+                        <Setter Property="CornerRadius" Value="0" />
+                    </Style>
+                </HorizontalStackLayout.Resources>
+
+                <Button x:Name="btnLDSP" Text="LDSP" Clicked="OnTabClicked" CommandParameter="LDSP" />
+                <Button x:Name="btnFasady" Text="Фасады" Clicked="OnTabClicked" CommandParameter="Fasady" />
+                <Button x:Name="btnDveri" Text="Двери/Профили" Clicked="OnTabClicked" CommandParameter="Dveri" />
+                <Button x:Name="btnMyagkaya" Text="Мягкая часть" Clicked="OnTabClicked" CommandParameter="Myagkaya" />
+                <Button x:Name="btnFurnitura" Text="Фурнитура" Clicked="OnTabClicked" CommandParameter="Furnitura" />
+                <Button x:Name="btnOtchet" Text="Отчёт" Clicked="OnTabClicked" CommandParameter="Otchet" />
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <ContentView Grid.Row="1"
+                     x:Name="ContentContainer"
+                     VerticalOptions="FillAndExpand"
+                     HorizontalOptions="Fill" />
+    </Grid>
+</ContentPage>

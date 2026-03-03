@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.CompletedPhotosPage"
+             Title="Фотоотчет"
+             BackgroundColor="#F0F0F0">
+
+    <ContentPage.Resources>
+        <local:ByteArrayToImageConverter x:Key="ByteArrayToImageConverter" />
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="15">
+            <Label Text="{Binding ProjectName}" FontSize="22" FontAttributes="Bold" TextColor="#312E35"/>
+
+            <CollectionView ItemsSource="{Binding Images}" SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="1" VerticalItemSpacing="15"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="local:ProjectImage">
+                        <Frame Padding="0" CornerRadius="12" IsClippedToBounds="True" HasShadow="True" BorderColor="#E0E0E0">
+                            <Grid RowDefinitions="120, Auto">
+                                <Image Grid.Row="0" 
+                                       Source="{Binding ImageData, Converter={StaticResource ByteArrayToImageConverter}}" 
+                                       Aspect="AspectFill" 
+                                       HeightRequest="120"> 
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnImageTapped" 
+                                                              CommandParameter="{Binding ImageData}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <VerticalStackLayout Grid.Row="1" Padding="15" BackgroundColor="White">
+                                    <Label Text="{Binding ImageName}" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="Нет фотографий в этом проекте" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Gray" Margin="0,50,0,0"/>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

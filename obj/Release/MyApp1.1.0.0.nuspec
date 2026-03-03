@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>MyApp1</id>
+    <version>1.0.0</version>
+    <authors>MyApp1</authors>
+    <description>Package Description</description>
+    <repository type="git" commit="c2059512de3c858c61265c1ec8bc7a9895fee23d" />
+    <dependencies>
+      <group targetFramework="net10.0-android36.0">
+        <dependency id="CommunityToolkit.Maui" version="13.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Maui.Controls" version="10.0.30" exclude="Build,Analyzers" />
+        <dependency id="QuestReportPdf" version="9.1.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net10.0-windows10.0.19041">
+        <dependency id="CommunityToolkit.Maui" version="13.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Debug" version="10.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Maui.Controls" version="10.0.30" exclude="Build,Analyzers" />
+        <dependency id="QuestReportPdf" version="9.1.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\denis\source\MyApp1\MyApp1\bin\Release\net10.0-android\MyApp1.runtimeconfig.json" target="lib\net10.0-android36.0\MyApp1.runtimeconfig.json" />
+    <file src="C:\Users\denis\source\MyApp1\MyApp1\bin\Release\net10.0-android\MyApp1.dll" target="lib\net10.0-android36.0\MyApp1.dll" />
+    <file src="C:\Users\denis\source\MyApp1\MyApp1\bin\Release\net10.0-android\MyApp1.xml" target="lib\net10.0-android36.0\MyApp1.xml" />
+    <file src="C:\Users\denis\source\MyApp1\MyApp1\bin\Release\net10.0-windows10.0.19041.0\win-x64\MyApp1.runtimeconfig.json" target="lib\net10.0-windows10.0.19041\MyApp1.runtimeconfig.json" />
+    <file src="C:\Users\denis\source\MyApp1\MyApp1\bin\Release\net10.0-windows10.0.19041.0\win-x64\MyApp1.dll" target="lib\net10.0-windows10.0.19041\MyApp1.dll" />
+    <file src="C:\Users\denis\source\MyApp1\MyApp1\bin\Release\net10.0-windows10.0.19041.0\win-x64\resources.pri" target="lib\net10.0-windows10.0.19041\resources.pri" />
+  </files>
+</package>

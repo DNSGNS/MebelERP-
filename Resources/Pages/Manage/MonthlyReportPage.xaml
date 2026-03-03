@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.MonthlyReportPage"
+             Title="Финансовый отчет"
+             BackgroundColor="#F0F0F0">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="HeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
+
+            <Style x:Key="DataLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="#2B3C51"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="11"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *">
+        <Border Grid.Row="0" BackgroundColor="White" StrokeThickness="0" Margin="0,0,0,10" Padding="10">
+            <Grid ColumnDefinitions="*, Auto, Auto, Auto" ColumnSpacing="10">
+
+                <HorizontalStackLayout Grid.Column="0"
+                       Spacing="8"
+                       VerticalOptions="Center">
+
+                    <Label Text="Год:"
+           TextColor="Black"
+           VerticalOptions="Center"
+           FontAttributes="Bold" />
+
+                    <Border Stroke="#E0E0E0"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 4"
+            Padding="5,0">
+                        <Picker x:Name="YearPicker"
+                WidthRequest="100"
+                HeightRequest="40"
+                TextColor="Black"
+                TitleColor="Gray"
+                FontSize="14"
+                HorizontalTextAlignment="Center"
+                SelectedIndexChanged="OnYearChanged" />
+                    </Border>
+
+                </HorizontalStackLayout>
+                <Button Grid.Column="1" Text="📊" Clicked="OnChartDummyClicked" 
+                        BackgroundColor="#2B3C51" TextColor="White" WidthRequest="45"/>
+
+                <Button Grid.Column="2" Text="🔄 ОБНОВИТЬ" Clicked="OnRefreshClicked"
+                        BackgroundColor="#6750A4" TextColor="White" FontAttributes="Bold"/>
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Row="1" Orientation="Both" Padding="10">
+            <VerticalStackLayout x:Name="ReportContainer" 
+                         Spacing="10" 
+                         HorizontalOptions="Start"
+                         WidthRequest="775"
+                         Margin="0,0,20,0">
+
+                <Border BackgroundColor="#2B3C51" 
+                StrokeThickness="0" 
+                Padding="0,12" 
+                StrokeShape="RoundRectangle 8">
+
+                    <Grid ColumnDefinitions="100, 70, 90, 100, 100, 100, 100, 80" 
+                  ColumnSpacing="5" 
+                  WidthRequest="775">
+                        <Label Grid.Column="0" Text="Месяц" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="1" Text="Заказы" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="2" Text="Сред. чек" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="3" Text="Продажи" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="4" Text="Реализ." Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="5" Text="Расходы" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="6" Text="Прибыль" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="7" Text="Маржа" Style="{StaticResource HeaderLabelStyle}"/>
+                    </Grid>
+                </Border>
+
+                <VerticalStackLayout x:Name="ItemsList" Spacing="5">
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

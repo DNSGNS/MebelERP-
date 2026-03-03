@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.LayoutProcessContentView">
+
+    <Grid RowDefinitions="Auto, *" BackgroundColor="White">
+
+        <Button Grid.Row="0" 
+                Text="Рассчитать раскладку" 
+                Clicked="OnCalculateClicked"
+                BackgroundColor="#6750A4" TextColor="White"
+                Margin="10" HeightRequest="50" CornerRadius="10"/>
+
+        <ScrollView Grid.Row="1" Padding="5" BackgroundColor="White">
+            <VerticalStackLayout x:Name="SheetsContainer" Spacing="15" BackgroundColor="White">
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentView>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.ManageMainPage"
+             x:Name="ThisPage"
+             Title="Планирование установок"
+             BackgroundColor="#F0F0F0">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior 
+            Command="{Binding BackCommand, Source={x:Reference ThisPage}}" />
+    </Shell.BackButtonBehavior>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:ProjectStatusConverter x:Key="ProjectStatusConverter"/>
+
+            <local:StatusColorConverter x:Key="StatusColorConverter"/>
+            <local:DateDisplayConverter x:Key="DateDisplayConverter"/>
+            <local:StatusToStringConverter x:Key="StatusToStringConverter"/>
+            <local:DateToTextConverter x:Key="DateToTextConverter"/>
+
+            <x:Array x:Key="StatusOptions" Type="{x:Type x:String}">
+                <x:String>Новый</x:String>
+                <x:String>В процессе</x:String>
+                <x:String>Выполнен</x:String>
+            </x:Array>
+
+            <Style x:Key="HeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
+
+            <Style x:Key="DataLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="#2B3C51"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="11"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *">
+        <Border Grid.Row="0" BackgroundColor="White" StrokeThickness="0" Margin="0,0,0,10">
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10" Padding="10">
+                <Button Grid.Column="0" 
+                Text="💾 СОХРАНИТЬ ВСЕ" 
+                Clicked="OnSaveAllClicked"
+                BackgroundColor="#6750A4" 
+                TextColor="White" 
+                HeightRequest="45"
+                CornerRadius="8"
+                FontAttributes="Bold"/>
+
+                <Button Grid.Column="1" 
+                Text="📅 КАЛЕНДАРЬ" 
+                Clicked="OnOpenCalendarClicked"
+                BackgroundColor="#2B3C51" 
+                TextColor="White" 
+                HeightRequest="45"
+                CornerRadius="8"
+                FontAttributes="Bold"/>
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Row="1" Orientation="Both" Padding="10">
+            <VerticalStackLayout Spacing="10">
+
+                <Border BackgroundColor="#2B3C51" StrokeThickness="0" Padding="0,12" 
+                        StrokeShape="RoundRectangle 8">
+                    <Grid ColumnDefinitions="90, 80, 80, 80, 160, 110, 110, 110, 150, 60" ColumnSpacing="5">
+                        <Label Grid.Column="0" Text="Дата созд." Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="1" Text="Стоимость" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="2" Text="Предопл." Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="3" Text="Остаток" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="4" Text="Адрес" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="5" Text="Замерщик" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="6" Text="Статус" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="7" Text="Дата уст." Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="8" Text="Установщики" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="9" Text="Действие" Style="{StaticResource HeaderLabelStyle}"/>
+                    </Grid>
+                </Border>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Projects}" Spacing="8">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="local:ProjectManageData">
+                            <Border StrokeThickness="0" BackgroundColor="White" Padding="0,8" 
+                                    StrokeShape="RoundRectangle 8">
+                                <Border.Shadow>
+                                    <Shadow Brush="Black" Offset="0,2" Opacity="0.1" Radius="3"/>
+                                </Border.Shadow>
+
+                                <Grid ColumnDefinitions="90, 80, 80, 80, 160, 110, 110, 110, 150, 110" ColumnSpacing="5" VerticalOptions="Center">
+                                    <Label Grid.Column="0" Text="{Binding CreationDate, Converter={StaticResource DateDisplayConverter}}" 
+                                           Style="{StaticResource DataLabelStyle}"/>
+
+                                    <Label Grid.Column="1" Text="{Binding TotalProjectPrice, StringFormat='{0:N0}'}" 
+                                           Style="{StaticResource DataLabelStyle}" FontAttributes="Bold"/>
+
+                                    <Label Grid.Column="2" Text="{Binding Prepayment, StringFormat='{0:N0}'}" 
+                                           TextColor="#2E7D32" Style="{StaticResource DataLabelStyle}"/>
+
+                                    <Label Grid.Column="3" Text="{Binding RemainingBalance, StringFormat='{0:N0}'}" 
+                                           TextColor="#C62828" Style="{StaticResource DataLabelStyle}"/>
+
+                                    <Label Grid.Column="4" Text="{Binding ProjectName}" 
+                                           Style="{StaticResource DataLabelStyle}" HorizontalTextAlignment="Start" 
+                                           LineBreakMode="WordWrap" Padding="10,0"/>
+
+                                    <Label Grid.Column="5" Text="{Binding CreatorName}" Style="{StaticResource DataLabelStyle}"/>
+
+                                    <StackLayout Grid.Column="6" Orientation="Horizontal" Spacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <BoxView WidthRequest="12" HeightRequest="12" CornerRadius="6" VerticalOptions="Center"
+                                                 Color="{Binding Status, Converter={StaticResource StatusColorConverter}}"/>
+                                        <Picker SelectedItem="{Binding Status, Converter={StaticResource ProjectStatusConverter}, Mode=TwoWay}"
+                                                ItemsSource="{StaticResource StatusOptions}"
+                                                FontSize="10" WidthRequest="110" VerticalOptions="Center" TextColor="#2B3C51"/>
+                                    </StackLayout>
+
+                                    <Grid Grid.Column="7" VerticalOptions="Center" HorizontalOptions="Center">
+                                        <Label Text="{Binding DatesDisplay}" 
+                                               Style="{StaticResource DataLabelStyle}"
+                                               TextColor="#1976D2"
+                                               TextDecorations="Underline"
+                                               VerticalOptions="Center"
+                                               LineBreakMode="WordWrap">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnDatesMenuTapped" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </Grid>
+
+                                    <Border Grid.Column="8" Margin="5" Padding="4" BackgroundColor="#F5F5F5" Stroke="#E0E0E0" StrokeShape="RoundRectangle 4">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnSelectInstallersTapped" CommandParameter="{Binding .}"/>
+                                        </Border.GestureRecognizers>
+                                        <Label Text="{Binding InstallersDisplay}" 
+                                               FontSize="10" 
+                                               TextColor="#2B3C51" 
+                                               HorizontalTextAlignment="Center"
+                                               LineBreakMode="WordWrap"/>
+                                    </Border>
+                                    <HorizontalStackLayout Grid.Column="9" Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Button Text="✔️" 
+                                                     FontSize="12"
+                                                     BackgroundColor="#4CAF50" 
+                                                     TextColor="White"
+                                                     HeightRequest="35"
+                                                     WidthRequest="35"
+                                                     CornerRadius="17"
+                                                     Padding="0"
+                                                     Clicked="OnTransferToCompletedClicked"
+                                                     CommandParameter="{Binding .}">
+                                            <Button.Triggers>
+                                                <DataTrigger TargetType="Button" Binding="{Binding IsProcessing}" Value="True">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                        </Button>
+
+                                        <Button Text="🗑️" 
+                                                     FontSize="12"
+                                                     BackgroundColor="#EF5350" 
+                                                     TextColor="White"
+                                                     HeightRequest="35"
+                                                     WidthRequest="35"
+                                                     CornerRadius="17"
+                                                     Padding="0"
+                                                     Clicked="OnDeleteProjectClicked"
+                                                     CommandParameter="{Binding .}">
+                                            <Button.Triggers>
+                                                <DataTrigger TargetType="Button" Binding="{Binding IsProcessing}" Value="True">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                        </Button>
+
+                                        <ActivityIndicator IsRunning="{Binding IsProcessing}"
+                                                                      IsVisible="{Binding IsProcessing}"
+                                                                      Color="#6750A4"
+                                                                      HeightRequest="30"
+                                                                      WidthRequest="30"
+                                                                      VerticalOptions="Center"
+                                                                      HorizontalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid Grid.RowSpan="2" 
+          BackgroundColor="#80000000" 
+          IsVisible="{Binding IsBusy}" 
+          InputTransparent="False">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                               Color="White" 
+                               HeightRequest="60" 
+                               WidthRequest="60"/>
+                <Label Text="Пожалуйста, подождите..." 
+                   TextColor="White" 
+                   FontSize="16"
+                   HorizontalTextAlignment="Center" 
+                   FontAttributes="Bold"/>
+            </VerticalStackLayout>
+        </Grid>
+        <Grid Grid.RowSpan="2"
+      x:Name="DatePickerOverlay"
+      BackgroundColor="#60000000"
+      IsVisible="False"
+      InputTransparent="False">
+            <Border BackgroundColor="White"
+            StrokeShape="RoundRectangle 12"
+            Padding="20"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            WidthRequest="300">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Выберите дату"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   TextColor="#2B3C51"
+                   HorizontalTextAlignment="Center"/>
+                    <DatePicker x:Name="GlobalDatePicker"
+                        DateSelected="OnGlobalDateSelected"
+                                TextColor="Black"
+                        HorizontalOptions="Center"/>
+                    <Button Text="Отмена"
+                    Clicked="OnDatePickerCancelClicked"
+                    BackgroundColor="#E0E0E0"
+                    TextColor="#2B3C51"
+                    CornerRadius="8"/>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.ReportPage"
+             Title="Детальный отчет"
+             BackgroundColor="#F5F5F5">
+
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="15" Spacing="15">
+
+                <Frame Style="{StaticResource ReportCardStyle}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="ЛДСП И КРОМКА" Style="{StaticResource HeaderLabelStyle}"/>
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+                        <Label Text="{Binding Summary.TotalAreaLdsp, StringFormat='Общая площадь: {0:F2} м²'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.TotalLdspCount, StringFormat='ЛДСП: {0:F2}'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.TotalEdgeCount, StringFormat='Кромка: {0:F2} '}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.LdspCost, StringFormat='ЛДСП: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.EdgingCost, StringFormat='Кромка: {0:N0} ₽'}" TextColor="Black"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource ReportCardStyle}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="ФАСАДЫ" Style="{StaticResource HeaderLabelStyle}"/>
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+                        <Label Text="{Binding Summary.StandardFasadCost, StringFormat='Плёнка: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.NonStandardFasadCost, StringFormat='Нестандартная фрезеровка: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.AgtCost, StringFormat='AGT: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.AluminiumCost, StringFormat='Алюминий: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.MirrorCost, StringFormat='Зеркало: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.TotalFasadCost, StringFormat='Итого по фасадам: {0:N0} ₽'}" FontAttributes="Bold" TextColor="#6750A4"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource ReportCardStyle}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="ДВЕРИ КУПЕ" Style="{StaticResource HeaderLabelStyle}"/>
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+                        <Label Text="{Binding Summary.DoorProfileCost, StringFormat='Профиль Двери: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.DoorMirrorTotalCost, StringFormat='Зеркало: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.DoorLdspCost, StringFormat='Дсп Двери: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.DoorMillingCost, StringFormat='Фрезеровка: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label TextColor="Black">
+                            <Label.Text>
+                                <MultiBinding StringFormat="Доп. вставки ({0}): {1:N0} ₽">
+                                    <Binding Path="Summary.DoorOtherInsertType" />
+                                    <Binding Path="Summary.DoorOtherInsertsCost" />
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
+                        <Label Text="{Binding Summary.DoorAssemblyCost, StringFormat='Сборка двери: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.DoorInstallationCost, StringFormat='Установка Двери: {0:N0} ₽'}" TextColor="Black"/>
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+                        <Label Text="{Binding Summary.TotalDoorCost, StringFormat='Итого по дверям: {0:N0} ₽'}" FontAttributes="Bold" TextColor="#6750A4"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource ReportCardStyle}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="МЯГКИЕ ЭЛЕМЕНТЫ" Style="{StaticResource HeaderLabelStyle}"/>
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+                        <Label Text="{Binding Summary.SoftPlaceCost, StringFormat='Мягкое место: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.SoftShieldCost, StringFormat='Мягкий щит: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.SoftBaseCost, StringFormat='Цоколь: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.SoftDryerCost, StringFormat='Сушка: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.SoftTabletopCost, StringFormat='Столешница: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.SoftApronCost, StringFormat='Фартук: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.SoftAdditionalCost, StringFormat='Дополнительно: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.TotalSoftlyCost, StringFormat='Итого по мягким: {0:N0} ₽'}" FontAttributes="Bold" TextColor="#6750A4"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource ReportCardStyle}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="ФУРНИТУРА" Style="{StaticResource HeaderLabelStyle}"/>
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="ХДФ ({1:N0}): {0:N0} ₽"><Binding Path="Summary.HdfCost"/><Binding Path="Summary.HdfCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Напр. БЕЗ дов. ({1:N0}): {0:N0} ₽"><Binding Path="Summary.RailBezCost"/><Binding Path="Summary.RailBezCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Напр. С дов. ({1:N0}): {0:N0} ₽"><Binding Path="Summary.RailWithCost"/><Binding Path="Summary.RailWithCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Петли БЕЗ дов. ({1:N0}): {0:N0} ₽"><Binding Path="Summary.HingeBezCost"/><Binding Path="Summary.HingeBezCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Петли С дов. ({1:N0}): {0:N0} ₽"><Binding Path="Summary.HingeWithCost"/><Binding Path="Summary.HingeWithCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Ручка СКОБА ({1:N0}): {0:N0} ₽"><Binding Path="Summary.HandleSkobaCost"/><Binding Path="Summary.HandleSkobaCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Ручка НАКЛАД. ({1:N0}): {0:N0} ₽"><Binding Path="Summary.HandleNakladCost"/><Binding Path="Summary.HandleNakladCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Ручка КНОПКА ({1:N0}): {0:N0} ₽"><Binding Path="Summary.HandleKnopkaCost"/><Binding Path="Summary.HandleKnopkaCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Профиль GOLA ({1:N0}): {0:N0} ₽"><Binding Path="Summary.GolaCost"/><Binding Path="Summary.GolaCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Труба ({1:N0}): {0:N0} ₽"><Binding Path="Summary.TubeCost"/><Binding Path="Summary.TubeCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Газ-лифты ({1:N0}): {0:N0} ₽"><Binding Path="Summary.GazLiftCost"/><Binding Path="Summary.GazLiftCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Крючки ({1:N0}): {0:N0} ₽"><Binding Path="Summary.HooksCost"/><Binding Path="Summary.HooksCount"/></MultiBinding></Label.Text></Label>
+                        <Label TextColor="Black"><Label.Text><MultiBinding StringFormat="Подсветка ({1:N0}): {0:N0} ₽"><Binding Path="Summary.PodsvetkaCost"/><Binding Path="Summary.PodsvetkaCount"/></MultiBinding></Label.Text></Label>
+                        <Label FontAttributes="Bold" TextColor="#6750A4"><Label.Text><MultiBinding StringFormat="Итого фурнитура ({1:N0}): {0:N0} ₽"><Binding Path="Summary.TotalFurnitureCost"/><Binding Path="Summary.TotalFurnitureCount"/></MultiBinding></Label.Text></Label>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource ReportCardStyle}" BorderColor="#2B3C51">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="УСЛУГИ И ПРОИЗВОДСТВО" Style="{StaticResource HeaderLabelStyle}"/>
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+                        <Label Text="{Binding Summary.WorkshopCost, StringFormat='Цех: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.PackagingCost, StringFormat='Упаковка: {0:N0} ₽'}" TextColor="Black"/>
+                        <Label Text="{Binding Summary.InstallationServiceCost, StringFormat='Установка: {0:N0} ₽'}" TextColor="Black"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame BackgroundColor="Transparent" Padding="10,20" HasShadow="False" BorderColor="Transparent">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+                        <Label Text="ИТОГО К ОПЛАТЕ:" HorizontalTextAlignment="Center" FontSize="16" FontAttributes="Bold" TextColor="Gray"/>
+                        <Label Text="{Binding Summary.TotalCost, StringFormat='{0:N0} ₽'}" 
+                               HorizontalTextAlignment="Center" FontSize="32" FontAttributes="Bold" TextColor="#6750A4"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Frame Grid.Row="1" BackgroundColor="White" Padding="20,15" HasShadow="True" CornerRadius="0">
+            <Button Text="СОХРАНИТЬ РАСЧЕТ" 
+                    Clicked="OnSaveReportClicked"
+                    BackgroundColor="#6750A4" 
+                    TextColor="White" 
+                    FontAttributes="Bold" 
+                    HeightRequest="55" 
+                    CornerRadius="12"/>
+        </Frame>
+    </Grid>
+</ContentPage>

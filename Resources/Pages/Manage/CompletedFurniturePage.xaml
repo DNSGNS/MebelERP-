@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.CompletedFurniturePage"
+             Title="Фурнитура архива"
+             BackgroundColor="#FBF8FF">
+
+    <Grid RowDefinitions="Auto, *" Padding="20" RowSpacing="15" BackgroundColor="#FBF8FF">
+
+        <Label Grid.Row="0" 
+               Text="{Binding ProjectName}" 
+               FontSize="24" 
+               FontAttributes="Bold" 
+               TextColor="#1C1B1F"/>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="0">
+
+                <Grid ColumnDefinitions="*, 100" Padding="15,0,15,8">
+                    <Label Text="НАИМЕНОВАНИЕ" 
+                           FontSize="12" 
+                           TextColor="#6750A4" 
+                           FontAttributes="Bold"/>
+                    <Label Grid.Column="1" 
+                           Text="КОЛ-ВО" 
+                           FontSize="12" 
+                           TextColor="#6750A4" 
+                           FontAttributes="Bold" 
+                           HorizontalTextAlignment="Center"/>
+                </Grid>
+
+                <Frame BackgroundColor="White" 
+                       HasShadow="False" 
+                       BorderColor="#CAC4D0" 
+                       CornerRadius="12" 
+                       Padding="0">
+
+                    <VerticalStackLayout Spacing="0" BindableLayout.ItemsSource="{Binding FurnitureItems}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <VerticalStackLayout Spacing="0">
+                                    <Grid ColumnDefinitions="*, 100" Padding="15,10">
+                                        <Label Text="{Binding Name}" VerticalOptions="Center" FontSize="15" TextColor="#1C1B1F"/>
+
+                                        <VerticalStackLayout Grid.Column="1">
+                                            <Entry Text="{Binding Value}" 
+                                                   Keyboard="Numeric" 
+                                                   HorizontalTextAlignment="Center" 
+                                                   TextColor="#1C1B1F" 
+                                                   FontSize="16" 
+                                                   IsReadOnly="True" 
+                                                   IsEnabled="False" 
+                                                   HeightRequest="40"/>
+                                            <BoxView HeightRequest="1" Color="#6750A4" Margin="5,0"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="#F0F0F0"/>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </Frame>
+
+
+                <Label Text="ПРОФИЛИ ДЛЯ ДВЕРЕЙ" 
+       FontSize="12" 
+       TextColor="#6750A4" 
+       FontAttributes="Bold" 
+       Padding="15,20,0,8"/>
+
+
+
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding ProfileGroups}" Spacing="15">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="local:ProfileGroup">
+                                <Frame BackgroundColor="White" 
+                   HasShadow="False" 
+                   BorderColor="#CAC4D0" 
+                   CornerRadius="12" 
+                   Padding="0">
+                                    <VerticalStackLayout Spacing="0">
+
+                                        <Grid ColumnDefinitions="*, 80, 60" Padding="15,10,15,5">
+                                            <Label Text="НАИМЕНОВАНИЕ" FontSize="12" TextColor="#6750A4" FontAttributes="Bold"/>
+                                            <Label Grid.Column="1" Text="РАЗМЕР" FontSize="12" TextColor="#6750A4" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                                            <Label Grid.Column="2" Text="КОЛ-ВО" FontSize="12" TextColor="#6750A4" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                                        </Grid>
+
+                                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Items}" Spacing="0">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate x:DataType="local:ProfileDisplayItem">
+                                                    <VerticalStackLayout Spacing="0">
+                                                        <Grid ColumnDefinitions="*, 80, 60" Padding="15,12">
+                                                            <Label Text="{Binding Name}" VerticalOptions="Center" FontSize="14" TextColor="#1C1B1F" LineBreakMode="TailTruncation"/>
+                                                            <Label Grid.Column="1" 
+                                               Text="{Binding Size, StringFormat='{0:F0}'}" 
+                                               VerticalOptions="Center" 
+                                               HorizontalTextAlignment="Center"
+                                               TextColor="#1C1B1F"/>
+                                                            <Label Grid.Column="2" 
+                                               Text="{Binding Count}" 
+                                               VerticalOptions="Center" 
+                                               HorizontalTextAlignment="Center"
+                                               TextColor="#1C1B1F"
+                                               FontAttributes="Bold"/>
+                                                        </Grid>
+                                                        <BoxView HeightRequest="1" Color="#F0F0F0" Margin="15,0"/>
+                                                    </VerticalStackLayout>
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </VerticalStackLayout>
+
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.MainCalculationPage"
+             x:DataType="local:MainCalculationPage"
+             Title="Расчеты проектов"
+             BackgroundColor="#F0F0F0">
+
+    <Grid RowDefinitions="Auto, *">
+        <Grid Grid.Row="0" ColumnDefinitions="*, *, *" ColumnSpacing="8" Margin="10,15">
+            <Button Grid.Column="0" Text="+ НОВЫЙ" Clicked="OnAddProjectClicked" BackgroundColor="#2B3C51" TextColor="White" HeightRequest="45" FontSize="11" CornerRadius="8"/>
+            <Button Grid.Column="1" Text="💾 СОХРАНИТЬ" Clicked="OnSaveAllClicked" BackgroundColor="#6750A4" TextColor="White" HeightRequest="45" FontSize="11" CornerRadius="8"/>
+            <Button Grid.Column="2" Text="📂 ЗАГРУЗИТЬ" Clicked="OnLoadAllClicked" BackgroundColor="#455A64" TextColor="White" HeightRequest="45" FontSize="11" CornerRadius="8"/>
+        </Grid>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding ProjectsList}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:ProjectData">
+                    <VerticalStackLayout Margin="10,5">
+
+                        <Frame Padding="12" BackgroundColor="White" CornerRadius="10" HasShadow="True" BorderColor="#CCCCCC">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnProjectTapped"/>
+                            </Frame.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto" ColumnSpacing="8">
+                                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="{Binding ProjectName}" TextColor="Black" FontAttributes="Bold" FontSize="15" VerticalOptions="Center"/>
+                                        <Button Text="✎" WidthRequest="30" HeightRequest="30" Padding="0" IsVisible="{Binding IsExpanded}"
+                                                BackgroundColor="#EEEEEE" TextColor="Black" FontSize="12"
+                                                Clicked="OnProjectOptionsClicked" CommandParameter="{Binding .}"/>
+                                    </HorizontalStackLayout>
+                                    <Label Text="{Binding CreationDate, StringFormat='{0:dd.MM.yyyy}'}" TextColor="Gray" FontSize="11"/>
+                                    <Label Text="{Binding TotalProjectPrice, StringFormat='{0:N0} ₽'}" FontSize="18" TextColor="#2B3C51" FontAttributes="Bold"/>
+                                </VerticalStackLayout>
+
+                                <Grid Grid.Column="1" IsVisible="{Binding IsExpanded}">
+                                    <Button Text="🔄" WidthRequest="38" HeightRequest="38" CornerRadius="19" Padding="0"
+            BackgroundColor="#E3F2FD" TextColor="#1565C0"
+            Clicked="OnRecalculateClicked" CommandParameter="{Binding .}">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding IsUploading}" Value="True">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+
+                                    <ActivityIndicator IsRunning="{Binding IsUploading}" 
+                       IsVisible="{Binding IsUploading}" 
+                       Color="#1565C0" 
+                       WidthRequest="30" HeightRequest="30"
+                       VerticalOptions="Center" HorizontalOptions="Center"/>
+                                </Grid>
+
+                                <Button Grid.Column="2" Text="📋" WidthRequest="38" HeightRequest="38" CornerRadius="19" Padding="0"
+                                        IsVisible="{Binding IsExpanded}" BackgroundColor="#E8F5E9" TextColor="#2E7D32"
+                                        Clicked="OnReportClicked" CommandParameter="{Binding .}"/>
+
+                                <Label Grid.Column="3" Text="{Binding Objects.Count, StringFormat='({0})'}" VerticalOptions="Center" TextColor="#555555" FontSize="12"/>
+
+                                <Button Grid.Column="4" Text="✕" BackgroundColor="#FFEBEE" TextColor="#C62828" IsVisible="{Binding IsExpanded}"
+                                        WidthRequest="38" HeightRequest="38" CornerRadius="19" Padding="0"
+                                        Clicked="OnRemoveProjectClicked" CommandParameter="{Binding .}"/>
+                            </Grid>
+                        </Frame>
+
+                        <Border IsVisible="{Binding IsExpanded}" Margin="5,-5,5,5" Padding="10" BackgroundColor="#E5E5E5">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="0,0,10,10" />
+                            </Border.StrokeShape>
+
+                            <VerticalStackLayout Spacing="10">
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Objects}" Spacing="5">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="local:ObjectData">
+                                            <Frame Padding="10" CornerRadius="5" HasShadow="False" BackgroundColor="White" BorderColor="#CCCCCC">
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnObjectTapped"/>
+                                                </Frame.GestureRecognizers>
+
+                                                <VerticalStackLayout Spacing="0">
+
+                                                    <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="10" VerticalOptions="Center">
+
+                                                        <Border Grid.Column="0" IsVisible="{Binding HasImage}" StrokeShape="RoundRectangle 8" WidthRequest="45" HeightRequest="45">
+                                                            <Border.GestureRecognizers>
+                                                                <TapGestureRecognizer Tapped="OnImageTapped" CommandParameter="{Binding ImagePath}"/>
+                                                            </Border.GestureRecognizers>
+                                                            <Image Source="{Binding ImagePath}" Aspect="AspectFill" />
+                                                        </Border>
+
+                                                        <Label Grid.Column="1" Text="{Binding ObjectName}" TextColor="Black" FontSize="15" 
+                       VerticalOptions="Center" LineBreakMode="TailTruncation"/>
+
+                                                        <Label Grid.Column="2" Text="{Binding Summary.TotalCost, StringFormat='{0:N0} ₽'}" 
+                       IsVisible="{Binding IsExpanded}"
+                       TextColor="#2E7D32" VerticalOptions="Center" FontAttributes="Bold" FontSize="14"/>
+                                                    </Grid>
+
+                                                    <Grid ColumnDefinitions="*, *, *, *" ColumnSpacing="10" Margin="0,15,0,0" IsVisible="{Binding IsExpanded}">
+
+                                                        <Button Grid.Column="0" Text="✎" HeightRequest="40" Padding="0" CornerRadius="8"
+                        BackgroundColor="#F0F0F0" TextColor="Black" 
+                        Clicked="OnObjectOptionsClicked" CommandParameter="{Binding .}"/>
+
+                                                        <Button Grid.Column="1" Text="📝" HeightRequest="40" Padding="0" CornerRadius="8"
+                        BackgroundColor="#E3F2FD" TextColor="#1565C0" 
+                        Clicked="OnEditObjectClicked" 
+                        CommandParameter="{Binding Source={RelativeSource AncestorType={x:Type local:ProjectData}}}"/>
+
+                                                        <Button Grid.Column="2" Text="✂️" HeightRequest="40" Padding="0" CornerRadius="8"
+                        BackgroundColor="#FFF3E0" TextColor="#E65100" 
+                        Clicked="OnCuttingClicked" CommandParameter="{Binding .}"/>
+
+                                                        <Button Grid.Column="3" Text="✕" HeightRequest="40" Padding="0" CornerRadius="8"
+                        BackgroundColor="#FFEBEE" TextColor="#C62828" 
+                        Clicked="OnRemoveObjectClicked" CommandParameter="{Binding .}"/>
+                                                    </Grid>
+
+                                                </VerticalStackLayout>
+                                            </Frame>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+
+                                <Button Text="+ ДОБАВИТЬ ОБЪЕКТ" Clicked="OnAddObjectClicked" CommandParameter="{Binding .}" BackgroundColor="#2B3C51" TextColor="White"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Grid Grid.RowSpan="2"
+          BackgroundColor="#80000000"
+          IsVisible="{Binding IsBusy}"
+          InputTransparent="False">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                               Color="White" 
+                               WidthRequest="70" 
+                               HeightRequest="70" />
+                <Label Text="Пожалуйста, подождите..." 
+                   TextColor="White" 
+                   FontSize="18" 
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

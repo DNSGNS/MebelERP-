@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.SalaryMonthlyPage"
+             Title="Ежемесячный отчет"
+             BackgroundColor="#F0F0F0">
+
+    <ContentPage.Resources>
+        <Style x:Key="HeaderLabelStyle" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style x:Key="DataLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="#2B3C51"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="11"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *">
+
+        <Border Grid.Row="0" Margin="10" Padding="10,8" BackgroundColor="White" StrokeShape="RoundRectangle 8" StrokeThickness="0">
+            <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+
+                <Label Text="Год:" 
+               TextColor="#2B3C51" 
+               VerticalOptions="Center" 
+               FontAttributes="Bold"
+               FontSize="14"/>
+
+                <Picker ItemsSource="{Binding Years}" 
+                SelectedItem="{Binding SelectedYear}"
+                WidthRequest="100"
+                BackgroundColor="#F5F5F5"
+                TextColor="#2B3C51"
+                FontSize="14"
+                Title="Год"/>
+
+                <Button Text="Обновить" 
+                Command="{Binding LoadDataCommand}" 
+                BackgroundColor="#6750A4"
+                TextColor="White"
+                CornerRadius="8"
+                HeightRequest="38"
+                Padding="15,0"
+                FontSize="13"/>
+
+            </HorizontalStackLayout>
+        </Border>
+
+        <ScrollView Grid.Row="1" Orientation="Both" Padding="10,0,10,10">
+            <Grid RowDefinitions="Auto, *" RowSpacing="0">
+
+                <Grid Grid.Row="0" ColumnDefinitions="150, Auto">
+                    <Border Grid.Column="0" 
+                            BackgroundColor="#2B3C51" 
+                            StrokeThickness="1" 
+                            Stroke="#CCCCCC" 
+                            HeightRequest="40">
+                        <Label Text="Работник" 
+                               Style="{StaticResource HeaderLabelStyle}"/>
+                    </Border>
+
+                    <StackLayout Grid.Column="1" Orientation="Horizontal" BindableLayout.ItemsSource="{Binding HeaderCells}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Border BackgroundColor="{Binding BgColor}" 
+                                        StrokeThickness="1" 
+                                        Stroke="White" 
+                                        WidthRequest="{Binding Width}" 
+                                        HeightRequest="40">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="{Binding MonthIndex}"/>
+                                    </Border.GestureRecognizers>
+
+                                    <Label Text="{Binding Text}" 
+                                           TextColor="{Binding TextColor}" 
+                                           FontAttributes="{Binding FontAttr}"
+                                           HorizontalOptions="Center" 
+                                           VerticalOptions="Center"
+                                           FontSize="12"/>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </Grid>
+
+                <StackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Rows}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="150, Auto" BackgroundColor="White">
+
+                                <Border Grid.Column="0" 
+                                        BackgroundColor="White" 
+                                        StrokeThickness="1" 
+                                        Stroke="#E0E0E0" 
+                                        HeightRequest="40">
+                                    <Label Text="{Binding WorkerName}" 
+                                           TextColor="#2B3C51" 
+                                           FontAttributes="Bold"
+                                           LineBreakMode="TailTruncation"
+                                           Padding="10,0"
+                                           VerticalOptions="Center"
+                                           FontSize="12"/>
+                                </Border>
+
+                                <StackLayout Grid.Column="1" Orientation="Horizontal" BindableLayout.ItemsSource="{Binding Cells}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BackgroundColor="{Binding BgColor}" 
+                                                    StrokeThickness="1" 
+                                                    Stroke="#EEEEEE" 
+                                                    WidthRequest="{Binding Width}" 
+                                                    HeightRequest="40">
+                                                <Label Text="{Binding Text}" 
+                                                       TextColor="{Binding TextColor}" 
+                                                       FontAttributes="{Binding FontAttr}"
+                                                       Style="{StaticResource DataLabelStyle}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+
+            </Grid>
+        </ScrollView>
+        <Grid Grid.RowSpan="2" 
+              BackgroundColor="#80000000" 
+              IsVisible="{Binding IsBusy}"
+              InputTransparent="False">
+
+            <VerticalStackLayout VerticalOptions="Center" 
+                                 HorizontalOptions="Center" 
+                                 Spacing="10">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                                   Color="White" 
+                                   WidthRequest="50" 
+                                   HeightRequest="50"/>
+                <Label Text="Загрузка данных..." 
+                       TextColor="White" 
+                       FontSize="16"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

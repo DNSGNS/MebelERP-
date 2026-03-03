@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.SoftlyPage"
+             BackgroundColor="#FBF8FF"
+             Title="Мягкие элементы">
+
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="20">
+
+                <Label Text="Мягкие элементы и дополнения" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       TextColor="#312E35"/>
+
+                <Frame BackgroundColor="White" BorderColor="#CAC4D0" CornerRadius="12" Padding="15" HasShadow="False">
+                    <VerticalStackLayout Spacing="15">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Тип мягкого места" FontSize="11" TextColor="#49454F" FontAttributes="Bold"/>
+                            <Picker ItemsSource="{Binding Categories}" 
+                                    SelectedItem="{Binding SelectedCategory}" 
+                                    TextColor="#1C1B1F"
+                                    FontSize="16"
+                                    HeightRequest="45"
+                                    VerticalTextAlignment="Center"/>
+                            <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                        </VerticalStackLayout>
+
+                        
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame BackgroundColor="White" BorderColor="#6750A4" CornerRadius="12" Padding="15" HasShadow="False">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Мягкий щит" FontAttributes="Bold" TextColor="#6750A4" FontSize="16"/>
+
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Тип исполнения щита" FontSize="11" TextColor="#6750A4" FontAttributes="Bold"/>
+                            <Picker ItemsSource="{Binding ShieldTypes}" 
+                                    SelectedItem="{Binding SoftShieldType}" 
+                                    TextColor="#1C1B1F"
+                                    FontSize="16"
+                                    HeightRequest="45"
+                                    VerticalTextAlignment="Center"/>
+                            <BoxView HeightRequest="1" Color="#6750A4"/>
+                        </VerticalStackLayout>
+
+                        <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Text="Длина" FontSize="11" HorizontalTextAlignment="Center" TextColor="#6750A4"/>
+                                <Entry Text="{Binding Length}" Keyboard="Numeric" TextColor="#1C1B1F" HorizontalTextAlignment="Center" Focused="OnEntryFocused"/>
+                                <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1">
+                                <Label Text="Ширина" FontSize="11" HorizontalTextAlignment="Center" TextColor="#6750A4"/>
+                                <Entry Text="{Binding Width}" Keyboard="Numeric" TextColor="#1C1B1F" HorizontalTextAlignment="Center" Focused="OnEntryFocused"/>
+                                <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2">
+                                <Label Text="Кол-во" FontSize="11" HorizontalTextAlignment="Center" TextColor="#6750A4"/>
+                                <Entry Text="{Binding Count}" Keyboard="Numeric" TextColor="#1C1B1F" HorizontalTextAlignment="Center" Focused="OnEntryFocused"/>
+                                <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <Label Text="{Binding Area, StringFormat='Площадь щита: {0:F3} м²'}" 
+                               FontSize="12" TextColor="Gray" HorizontalOptions="End"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame BackgroundColor="White" BorderColor="#2B3C51" CornerRadius="12" Padding="15" HasShadow="False">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Кухня" FontAttributes="Bold" TextColor="#2B3C51" FontSize="16"/>
+                        <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Text="Столешница" FontSize="10" HorizontalTextAlignment="Center" TextColor="#2B3C51"/>
+                                <Entry Text="{Binding Tabletop}" Keyboard="Numeric" TextColor="#1C1B1F" HorizontalTextAlignment="Center" Focused="OnEntryFocused"/>
+                                <BoxView HeightRequest="1.5" Color="#2B3C51"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1">
+                                <Label Text="Фартук" FontSize="10" HorizontalTextAlignment="Center" TextColor="#2B3C51"/>
+                                <Entry Text="{Binding Apron}" Keyboard="Numeric" TextColor="#1C1B1F" HorizontalTextAlignment="Center" Focused="OnEntryFocused"/>
+                                <BoxView HeightRequest="1.5" Color="#2B3C51"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2">
+                                <Label Text="Доп." FontSize="10" HorizontalTextAlignment="Center" TextColor="#2B3C51"/>
+                                <Entry Text="{Binding Additional}" Keyboard="Numeric" TextColor="#1C1B1F" HorizontalTextAlignment="Center" Focused="OnEntryFocused"/>
+                                <BoxView HeightRequest="1.5" Color="#2B3C51"/>
+                            </VerticalStackLayout>
+                            
+                        </Grid>
+                        <HorizontalStackLayout Spacing="30" HorizontalOptions="Center">
+                            <HorizontalStackLayout Spacing="5">
+                                <CheckBox IsChecked="{Binding HasBase}" Color="#6750A4"/>
+                                <Label Text="Цоколь" VerticalOptions="Center" TextColor="#1C1B1F"/>
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="5">
+                                <CheckBox IsChecked="{Binding HasDryer}" Color="#6750A4"/>
+                                <Label Text="Сушка" VerticalOptions="Center" TextColor="#1C1B1F"/>
+                            </HorizontalStackLayout>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button Grid.Row="1" 
+                Text="ПЕРЕЙТИ К ФУРНИТУРАМ →" 
+                Clicked="OnNavigateToFurnitureClicked" 
+                BackgroundColor="#2B3C51" 
+                TextColor="White" 
+                HeightRequest="55" 
+                CornerRadius="28" 
+                Margin="20"
+                FontAttributes="Bold"/>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.SalaryReportPage"
+             Title="Отчет по зарплате"
+             BackgroundColor="#F0F0F0">
+
+    <ContentPage.Resources>
+        <Style x:Key="HeaderLabelStyle" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style x:Key="DataLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="#2B3C51"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="11"/>
+        </Style>
+        <ResourceDictionary>
+            <local:MaterialNameConverter x:Key="MaterialConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <Grid RowDefinitions="Auto, Auto, *">
+
+        <Border Grid.Row="0" Margin="10" Padding="10" BackgroundColor="White" StrokeShape="RoundRectangle 8" StrokeThickness="0">
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                <Grid ColumnDefinitions="Auto, Auto, Auto, Auto" ColumnSpacing="15" VerticalOptions="Center">
+
+                    <Picker x:Name="MonthPicker" 
+                    Grid.Column="0" 
+                    Title="Месяц" 
+                    WidthRequest="120" 
+                    SelectedIndexChanged="OnFilterChanged" 
+                    TextColor="Black">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Январь</x:String>
+                                <x:String>Февраль</x:String>
+                                <x:String>Март</x:String>
+                                <x:String>Апрель</x:String>
+                                <x:String>Май</x:String>
+                                <x:String>Июнь</x:String>
+                                <x:String>Июль</x:String>
+                                <x:String>Август</x:String>
+                                <x:String>Сентябрь</x:String>
+                                <x:String>Октябрь</x:String>
+                                <x:String>Ноябрь</x:String>
+                                <x:String>Декабрь</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+
+                    <Picker x:Name="YearPicker" 
+                    Grid.Column="1" 
+                    Title="Год" 
+                    WidthRequest="90" 
+                    SelectedIndexChanged="OnFilterChanged" 
+                    TextColor="Black"/>
+
+                    <StackLayout Grid.Column="2" 
+                         Orientation="Horizontal" 
+                         VerticalOptions="Center" 
+                         Spacing="5">
+                        <Label Text="Итого:" FontAttributes="Bold" TextColor="#2B3C51" VerticalOptions="Center"/>
+                        <Label Text="{Binding TotalSum, StringFormat='{0:N2} ₽'}" 
+                       FontAttributes="Bold" 
+                       TextColor="#2E7D32" 
+                       FontSize="16" 
+                       VerticalOptions="Center"/>
+                    </StackLayout>
+
+                    <Button x:Name="BtnAddRecord" 
+                    Grid.Column="3"
+                    Text="➕" 
+                    Clicked="OnAddRecordClicked"
+                    BackgroundColor="#2B3C51" 
+                    TextColor="#2E7D32" 
+                    HeightRequest="40" 
+                    WidthRequest="40" 
+                    CornerRadius="20"/>
+
+                </Grid>
+            </ScrollView>
+        </Border>
+        
+        <ScrollView Grid.Row="2" Orientation="Both" Padding="10,0,10,10">
+            <VerticalStackLayout Spacing="5">
+
+                <Border BackgroundColor="#2B3C51" StrokeThickness="0" Padding="0,12" StrokeShape="RoundRectangle 8">
+                    <Grid ColumnDefinitions="90, 120, 120, 70, 80, 70, 70, 70, 70, 70, 70, 70, 70, 150, 90, 90, 150, 90, 80" ColumnSpacing="5">
+                        <Label Grid.Column="0" Text="Дата" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="1" Text="Работник" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="2" Text="Проект" Style="{StaticResource HeaderLabelStyle}"/>
+
+                        <Label Grid.Column="3" Text="Замер" Style="{StaticResource HeaderLabelStyle}"/>
+
+                        <Label Grid.Column="4" Text="Мат." Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="5" Text="Пила" Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="6" Text="Кромка" Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="7" Text="Присадка" Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="8" Text="Полотно" Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="9" Text="Секцион." Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="10" Text="Упак." Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="11" Text="Устан." Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="12" Text="Шлеф. МЫЛО" Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="13" Text="Шлеф. Фреза" Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="14" Text="Фрезеровка" Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="15" Text="Доп." Style="{StaticResource HeaderLabelStyle}" FontSize="10"/>
+                        <Label Grid.Column="16" Text="Коммент" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="17" Text="Сумма" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="18" Text="Действия" Style="{StaticResource HeaderLabelStyle}"/>
+                    </Grid>
+                </Border>
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding DisplayItems}" Spacing="5">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border StrokeThickness="0" BackgroundColor="White" Padding="0,8" StrokeShape="RoundRectangle 8">
+                                <Grid ColumnDefinitions="90, 120, 120, 70, 80, 70, 70, 70, 70, 70, 70, 70, 70, 150, 90, 90, 150, 90, 80" 
+                  ColumnSpacing="5" 
+                  VerticalOptions="Center">
+
+                                    <Label Grid.Column="0" Text="{Binding DatePerformed, StringFormat='{0:dd.MM.yy}'}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="1" Text="{Binding WorkerName}" Style="{StaticResource DataLabelStyle}" LineBreakMode="TailTruncation"/>
+                                    <Label Grid.Column="2" Text="{Binding ProjectName}" Style="{StaticResource DataLabelStyle}" LineBreakMode="TailTruncation"/>
+
+                                    <Label Grid.Column="3" Text="{Binding Measurement}" Style="{StaticResource DataLabelStyle}"/>
+
+                                    <Label Grid.Column="4" 
+       Text="{Binding Material, Converter={StaticResource MaterialConverter}}" 
+       Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="5" Text="{Binding Saw, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="6" Text="{Binding Edging, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="7" Text="{Binding Additive, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="8" Text="{Binding DoorCanvas}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="9" Text="{Binding DoorSectional}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="10" Text="{Binding Packaging, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="11" Text="{Binding Installation, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="12" Text="{Binding GrindingSoap, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="13" Text="{Binding GrindingFrez, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="14" Text="{Binding Milling, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="15" Text="{Binding Additionally, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="16" Text="{Binding Comment}" Style="{StaticResource DataLabelStyle}" LineBreakMode="TailTruncation" FontSize="10"/>
+                                    <Label Grid.Column="17" Text="{Binding TotalSalary, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}" FontAttributes="Bold"/>
+
+                                    <StackLayout Grid.Column="18" Orientation="Horizontal" HorizontalOptions="Center" Spacing="10">
+                                        <Label Text="✏️" FontSize="18">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnEditRecordTapped" CommandParameter="{Binding .}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <Label Text="🗑️" FontSize="18" TextColor="Red">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnDeleteRecordTapped" CommandParameter="{Binding .}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </StackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.RowSpan="3" BackgroundColor="#80000000" IsVisible="{Binding IsBusy}">
+            <ActivityIndicator IsRunning="True" Color="White" VerticalOptions="Center" HorizontalOptions="Center"/>
+        </Grid>
+    </Grid>
+</ContentPage>

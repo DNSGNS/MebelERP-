@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             x:Class="MyApp1.SalesChartPage"
+             Title="Аналитика продаж"
+             BackgroundColor="#F0F2F5">
+
+    <Grid RowDefinitions="Auto, *">
+        <Border Grid.Row="0" BackgroundColor="White" Padding="10" StrokeThickness="0">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Выберите период анализа" 
+                       FontSize="12" 
+                       TextColor="Gray" 
+                       HorizontalOptions="Center"/>
+                <Border StrokeShape="RoundRectangle 8" Stroke="#E0E0E0" Padding="5,0" WidthRequest="200">
+                    <Picker x:Name="YearPicker" 
+                            Title="Период"
+                            TextColor="#2B3C51"
+                            HorizontalTextAlignment="Center"
+                            SelectedIndexChanged="OnYearSelected"/>
+                </Border>
+            </VerticalStackLayout>
+        </Border>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="10" Spacing="15">
+
+                <Border BackgroundColor="White" 
+                        Padding="0,20,0,10" 
+                        StrokeShape="RoundRectangle 15" 
+                        StrokeThickness="0">
+
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label x:Name="ChartTitle" 
+                               Text="Продажи по месяцам" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               HorizontalOptions="Center" 
+                               TextColor="#2B3C51"/>
+
+                        <ScrollView x:Name="ChartScroll" 
+                                    Orientation="Horizontal" 
+                                    HorizontalScrollBarVisibility="Never"
+                                    Scrolled="OnChartScrolled">
+                                                    <lvc:CartesianChart x:Name="MainChart"
+                                                HeightRequest="400"
+                                                Series="{Binding Series}"
+                                                XAxes="{Binding XAxes}"
+                                                YAxes="{Binding YAxes}"
+                                                TooltipPosition="Top"
+                                                BackgroundColor="White"
+                                                Margin="10"/>
+                        </ScrollView>
+                        <Slider x:Name="ScrollSlider"
+                                Margin="20,0"
+                                Minimum="0"
+                                ValueChanged="OnSliderValueChanged"
+                                MinimumTrackColor="#5C6BC0"
+                                ThumbColor="#5C6BC0"/>
+                    </VerticalStackLayout>
+                </Border>
+                <Label Text="* Суммы округлены для удобства отображения (к = тыс., М = млн.)" 
+                       FontSize="10" 
+                       TextColor="Gray" 
+                       HorizontalOptions="Center" 
+                       HorizontalTextAlignment="Center"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

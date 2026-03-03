@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.ManageCalendarPage"
+             Title="Календарь установок"
+             BackgroundColor="#F0F0F0">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:MonthIndexConverter x:Key="MonthIndexConverter"/>
+            <local:EmptyDayColorConverter x:Key="EmptyDayColorConverter"/>
+            <local:EmptyDayStrokeConverter x:Key="EmptyDayStrokeConverter"/>
+            <local:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *">
+        <Border Grid.Row="0" BackgroundColor="White" StrokeThickness="0" Margin="0,0,0,2" Padding="10">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                <Picker ItemsSource="{Binding Months}" 
+                        SelectedIndex="{Binding SelectedMonth, Converter={StaticResource MonthIndexConverter}}"
+                        FontSize="16" TextColor="#2B3C51" WidthRequest="140" Title="Месяц"/>
+                <Picker ItemsSource="{Binding Years}" 
+                        SelectedItem="{Binding SelectedYear}"
+                        FontSize="16" TextColor="#2B3C51" WidthRequest="90" Title="Год"/>
+            </HorizontalStackLayout>
+        </Border>
+
+        <ScrollView Grid.Row="1" Orientation="Both">
+            <Grid RowDefinitions="Auto, Auto" WidthRequest="500" Padding="5">
+
+                <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*,*,*" HeightRequest="30" Margin="0,0,0,5">
+                    <Label Grid.Column="0" Text="ПОНЕДЕЛЬНИК" HorizontalTextAlignment="Center" FontSize="11" FontAttributes="Bold" TextColor="#2B3C51"/>
+                    <Label Grid.Column="1" Text="ВТОРНИК" HorizontalTextAlignment="Center" FontSize="11" FontAttributes="Bold" TextColor="#2B3C51"/>
+                    <Label Grid.Column="2" Text="СРЕДА" HorizontalTextAlignment="Center" FontSize="11" FontAttributes="Bold" TextColor="#2B3C51"/>
+                    <Label Grid.Column="3" Text="ЧЕТВЕРГ" HorizontalTextAlignment="Center" FontSize="11" FontAttributes="Bold" TextColor="#2B3C51"/>
+                    <Label Grid.Column="4" Text="ПЯТНИЦА" HorizontalTextAlignment="Center" FontSize="11" FontAttributes="Bold" TextColor="#2B3C51"/>
+                    <Label Grid.Column="5" Text="СУББОТА" HorizontalTextAlignment="Center" FontSize="11" FontAttributes="Bold" TextColor="#C62828"/>
+                    <Label Grid.Column="6" Text="ВОСКРЕСЕНЬЕ" HorizontalTextAlignment="Center" FontSize="11" FontAttributes="Bold" TextColor="#C62828"/>
+                </Grid>
+
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Days}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="7" HorizontalItemSpacing="4" VerticalItemSpacing="4" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="local:CalendarDay">
+                            <Border HeightRequest="70" Padding="5" StrokeShape="RoundRectangle 4"
+            BackgroundColor="{Binding IsEmpty, Converter={StaticResource EmptyDayColorConverter}}"
+            Stroke="{Binding IsEmpty, Converter={StaticResource EmptyDayColorConverter}}" 
+            StrokeThickness="{Binding IsEmpty, Converter={StaticResource EmptyDayStrokeConverter}}">
+
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnDayTapped" CommandParameter="{Binding .}"/>
+                                </Border.GestureRecognizers>
+
+                                <Grid RowDefinitions="Auto, *" 
+              IsClippedToBounds="True"
+              IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}">
+
+                                    <Label Grid.Row="0" Text="{Binding DayNumber}" 
+                   HorizontalTextAlignment="End" 
+                   FontSize="10" 
+                   FontAttributes="Bold" 
+                   TextColor="#6750A4"
+                   Margin="0,0,2,2"/>
+
+                                    <VerticalStackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Projects}" Spacing="2">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="local:ProjectManageData">
+                                                <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 2" Padding="3">
+                                                    <VerticalStackLayout>
+                                                        <Label Text="{Binding ProjectName}" 
+                                       FontSize="8" 
+                                       FontAttributes="Bold" 
+                                       MaxLines="1" 
+                                       LineBreakMode="TailTruncation" 
+                                       TextColor="#2B3C51"/>
+                                                        <Label Text="{Binding InstallersDisplay}" 
+                                       FontSize="7" 
+                                       TextColor="#1976D2" 
+                                       LineBreakMode="TailTruncation"
+                                       MaxLines="1"/>
+                                                    </VerticalStackLayout>
+                                                </Border>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

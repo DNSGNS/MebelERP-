@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.CompletedOrdersPage"
+             Title="Завершенные заказы"
+             BackgroundColor="#F0F0F0">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:StatusColorConverter x:Key="StatusColorConverter"/>
+            <local:DateDisplayConverter x:Key="DateDisplayConverter"/>
+            <local:DateToTextConverter x:Key="DateToTextConverter"/>
+
+            <Style x:Key="HeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="11"/>
+            </Style>
+
+            <Style x:Key="DataLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="#2B3C51"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="10"/>
+            </Style>
+
+            <Style x:Key="ActionButtonStyle" TargetType="Button">
+                <Setter Property="FontSize" Value="10"/>
+                <Setter Property="HeightRequest" Value="30"/>
+                <Setter Property="CornerRadius" Value="4"/>
+                <Setter Property="Padding" Value="2"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *">
+
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *, *" ColumnSpacing="10" Padding="10" VerticalOptions="Center">
+            <HorizontalStackLayout Grid.Column="0" Spacing="10" VerticalOptions="Center">
+                <Label Text="Год:" VerticalOptions="Center" TextColor="#2B3C51" FontAttributes="Bold"/>
+                <Border StrokeShape="RoundRectangle 4" Padding="5,0" BackgroundColor="White">
+                    <Picker x:Name="YearPicker"
+                            WidthRequest="90"
+                            ItemsSource="{Binding Years}"
+                            SelectedItem="{Binding SelectedYear}"
+                            TextColor="Black"
+                            SelectedIndexChanged="OnYearSelected" />
+                </Border>
+            </HorizontalStackLayout>
+
+            <Button Grid.Column="1" 
+                    Text="Выбрать всё" 
+                    Clicked="OnSelectAllClicked" 
+                    Style="{StaticResource ActionButtonStyle}" 
+                    BackgroundColor="#607D8B"
+                    HorizontalOptions="Fill"/>
+
+            <Button Grid.Column="2" 
+                    Text="Удалить" 
+                    Clicked="OnDeleteSelectedClicked" 
+                    Style="{StaticResource ActionButtonStyle}" 
+                    BackgroundColor="Orange"
+                    HorizontalOptions="Fill"/>
+        </Grid>
+
+        <ScrollView Grid.Row="1" Orientation="Both" Padding="10">
+            <VerticalStackLayout Spacing="10">
+
+                <Border BackgroundColor="#2B3C51" StrokeThickness="0" Padding="0,12" StrokeShape="RoundRectangle 8">
+                    <Grid ColumnDefinitions="90, 80, 80, 80, 150, 100, 90, 90, 90, 100, 140, 40" ColumnSpacing="5">
+                        <Label Grid.Column="0" Text="Дата созд." Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="1" Text="Стоимость" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="2" Text="Предопл." Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="3" Text="Остаток" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="4" Text="Адрес" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="5" Text="Замерщик" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="6" Text="Детали" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="7" Text="Фотогр." Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="8" Text="Объекты" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="9" Text="Дата уст." Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="10" Text="Установщики" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="11" Text="Выб." Style="{StaticResource HeaderLabelStyle}"/>
+                    </Grid>
+                </Border>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding CompletedProjects}" Spacing="8">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="local:CompletedProject">
+                            <Border StrokeThickness="0" BackgroundColor="White" Padding="0,8" StrokeShape="RoundRectangle 8">
+                                <Grid ColumnDefinitions="90, 80, 80, 80, 150, 100, 90, 90, 90, 100, 140, 40" ColumnSpacing="5">
+                                    <Label Grid.Column="0" Text="{Binding CreateTime, Converter={StaticResource DateDisplayConverter}}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="1" Text="{Binding TotalProjectPrice, StringFormat='{0:N0}'}" Style="{StaticResource DataLabelStyle}" FontAttributes="Bold"/>
+                                    <Label Grid.Column="2" Text="{Binding Prepayment, StringFormat='{0:N0}'}" TextColor="#2E7D32" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="3" Text="{Binding RemainingBalance, StringFormat='{0:N0}'}" TextColor="#C62828" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="4" Text="{Binding ProjectName}" Style="{StaticResource DataLabelStyle}" HorizontalTextAlignment="Start" LineBreakMode="WordWrap"/>
+                                    <Label Grid.Column="5" Text="{Binding CreatorName}" Style="{StaticResource DataLabelStyle}"/>
+
+                                    <Button Grid.Column="6" Text="📦 Детали" Clicked="OnFurnitureClicked" CommandParameter="{Binding .}" Style="{StaticResource ActionButtonStyle}" BackgroundColor="#607D8B"/>
+                                    <Button Grid.Column="7" Text="📸 Фото" Clicked="OnPhotosClicked" CommandParameter="{Binding .}" Style="{StaticResource ActionButtonStyle}" BackgroundColor="#FF9800"/>
+                                    <Button Grid.Column="8" Text="📂 Объекты" Clicked="OnObjectsClicked" CommandParameter="{Binding .}" Style="{StaticResource ActionButtonStyle}" BackgroundColor="#2196F3"/>
+
+                                    <Label Grid.Column="9" Text="{Binding InstallTime, Converter={StaticResource DateToTextConverter}}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Label Grid.Column="10" Text="{Binding InstallersSnapshot}" Style="{StaticResource DataLabelStyle}" LineBreakMode="WordWrap"/>
+                                    <CheckBox Grid.Column="11" IsChecked="{Binding IsSelected}" VerticalOptions="Center" HorizontalOptions="Center" Color="#2B3C51"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.RowSpan="2" 
+              BackgroundColor="#80000000" 
+              IsVisible="{Binding IsBusy}" 
+              InputTransparent="False">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                                   Color="White" 
+                                   WidthRequest="50" 
+                                   HeightRequest="50"/>
+                <Label Text="Загрузка архива..." 
+                       TextColor="White" 
+                       FontSize="16" 
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

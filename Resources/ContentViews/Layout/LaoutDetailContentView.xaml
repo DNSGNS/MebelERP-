@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.LayoutDetailContentView"
+             x:Name="ThisContent">
+    <ContentView.Resources>
+        <ColumnDefinitionCollection x:Key="TableColumns">
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="35"/>
+        </ColumnDefinitionCollection>
+    </ContentView.Resources>
+
+    <Grid RowDefinitions="Auto, Auto, *" Padding="20" RowSpacing="10">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,10">
+            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                <Label Text="ДЕТАЛИ" FontSize="28" FontAttributes="Bold" TextColor="#312E35"/>
+            </VerticalStackLayout>
+
+            <Button Grid.Column="1" Text="+" FontSize="26" BackgroundColor="#6750A4" TextColor="White" 
+                    CornerRadius="22" WidthRequest="44" HeightRequest="44" Padding="0"
+                    Clicked="OnAddDetailClicked"/>
+        </Grid>
+
+        <Grid Grid.Row="1" ColumnDefinitions="{StaticResource TableColumns}" Padding="5,0">
+            <Label Grid.Column="0" Text="№" FontSize="11" FontAttributes="Bold" TextColor="#79747E" HorizontalOptions="Center"/>
+            <Label Grid.Column="1" Text="ДЛИНА" FontSize="11" FontAttributes="Bold" TextColor="#79747E" HorizontalOptions="Center"/>
+            <Label Grid.Column="3" Text="ШИРИНА" FontSize="11" FontAttributes="Bold" TextColor="#79747E" HorizontalOptions="Center"/>
+            <Label Grid.Column="4" Text="КОЛ" FontSize="11" FontAttributes="Bold" TextColor="#79747E" HorizontalOptions="Center"/>
+
+            <Label Grid.Column="5" Text="ЦВЕТ" FontSize="11" FontAttributes="Bold" TextColor="#79747E" 
+                   HorizontalOptions="Center" Margin="10,0"
+                   IsVisible="{Binding IsColorVisible}"/>
+            <Label Grid.Column="6" Text="ФРЕЗА" FontSize="11" FontAttributes="Bold" TextColor="#79747E" 
+                   HorizontalOptions="Center" Margin="10,0"
+                   IsVisible="{Binding IsMillingText}"/>
+
+
+            <Label Grid.Column="7" Text="🔄" FontSize="12" HorizontalOptions="Center"/>
+        </Grid>
+
+        <CollectionView Grid.Row="2" 
+                x:Name="DetailsCollectionView"
+                ItemsSource="{Binding DetailsForm.Details}"
+                SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:CuttingDetails">
+                    <Grid RowDefinitions="Auto, 1">
+                        <Grid Grid.Row="0" ColumnDefinitions="{StaticResource TableColumns}" Padding="0,5">
+
+                            <Label Grid.Column="0" Text="{Binding Id}" VerticalOptions="Center" HorizontalOptions="Center" 
+                           FontSize="12" TextColor="#49454F"/>
+
+                            <Entry Grid.Column="1" Text="{Binding Length}" Keyboard="Numeric" HorizontalTextAlignment="Center" 
+                           FontSize="15" TextColor="#1C1B1F" HeightRequest="35"
+                           ReturnType="Next"
+                           Loaded="OnLengthEntryLoaded"
+                           Completed="OnLengthCompleted"
+                           Unfocused="OnDetailSizeChanged" 
+                           Focused="OnEntryFocused"/>
+
+                            <Label Grid.Column="2" Text="x" VerticalOptions="Center" HorizontalOptions="Center" 
+                           TextColor="#79747E" FontSize="14"/>
+
+                            <Entry Grid.Column="3" Text="{Binding Width}" Keyboard="Numeric" HorizontalTextAlignment="Center" 
+                           FontSize="15" TextColor="#1C1B1F" HeightRequest="35"
+                           ReturnType="Next"
+                           Completed="OnWidthCompleted"
+                           Unfocused="OnDetailSizeChanged" 
+                           Focused="OnEntryFocused"/>
+
+                            <Entry Grid.Column="4" Text="{Binding Count}" Keyboard="Numeric" HorizontalTextAlignment="Center" 
+                           FontSize="15" TextColor="#1C1B1F" HeightRequest="35"
+                           ReturnType="Done"
+                           Completed="OnCountCompleted"
+                           Focused="OnEntryFocused"/>
+
+                            <Label Grid.Column="5" Text="{Binding Color}" VerticalOptions="Center" HorizontalOptions="Center"
+                           FontSize="12" TextColor="#6750A4" Margin="10,0" LineBreakMode="TailTruncation"
+                           IsVisible="{Binding BindingContext.IsColorVisible, Source={x:Reference ThisContent}}"/>
+
+                            <Label Grid.Column="6" Text="{Binding MillingText}" VerticalOptions="Center" HorizontalOptions="Center"
+                           FontSize="12" TextColor="#6750A4" Margin="10,0" LineBreakMode="TailTruncation"
+                           IsVisible="{Binding BindingContext.IsMillingText, Source={x:Reference ThisContent}}"/>
+
+                            <CheckBox Grid.Column="7" IsChecked="{Binding CanRotate}" Color="#6750A4" Scale="0.8"
+                              HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                            <Button Grid.Column="8" Text="✕" BackgroundColor="Transparent" TextColor="#B3261E" 
+                            FontSize="18" HeightRequest="35" WidthRequest="35" Padding="0" 
+                            VerticalOptions="Center" Clicked="OnRemoveDetailClicked" CommandParameter="{Binding .}"/>
+                        </Grid>
+
+                        <BoxView Grid.Row="1" Color="#E0E0E0" HeightRequest="1" VerticalOptions="End"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.Footer>
+                <BoxView HeightRequest="100" BackgroundColor="Transparent"/>
+            </CollectionView.Footer>
+        </CollectionView>
+    </Grid>
+</ContentView>

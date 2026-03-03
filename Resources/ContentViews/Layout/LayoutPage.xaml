@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.LayoutPage"
+             Title="Раскладка" 
+             BackgroundColor="#FBF8FF"
+             Padding="0">
+
+    <Grid RowDefinitions="Auto, *">
+        <ScrollView Grid.Row="0" 
+                    Orientation="Horizontal" 
+                    HorizontalScrollBarVisibility="Never" 
+                    BackgroundColor="#2B3C51"
+                    HeightRequest="60">
+
+            <HorizontalStackLayout Padding="10,0" Spacing="5" VerticalOptions="Center">
+                <HorizontalStackLayout.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="BackgroundColor" Value="Transparent" />
+                        <Setter Property="TextColor" Value="White" />
+                        <Setter Property="FontAttributes" Value="Bold" />
+                        <Setter Property="FontSize" Value="13" />
+                        <Setter Property="Padding" Value="15,0" />
+                        <Setter Property="HeightRequest" Value="50" />
+                        <Setter Property="MinimumWidthRequest" Value="90" />
+                        <Setter Property="BorderWidth" Value="0" />
+                        <Setter Property="CornerRadius" Value="0" />
+                    </Style>
+                </HorizontalStackLayout.Resources>
+
+                <Button x:Name="btnDetail" Text="Детали" Clicked="OnTabClicked" CommandParameter="Detail" />
+                <Button x:Name="btnProcess" Text="Раскладка" Clicked="OnTabClicked" CommandParameter="Process" />
+                <Button x:Name="btnEdit" Text="Редактор" Clicked="OnTabClicked" CommandParameter="Edit" />
+                <Button x:Name="btnReport" Text="Отчёт" Clicked="OnTabClicked" CommandParameter="Report" />
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <ContentView Grid.Row="1"
+                     x:Name="ContentContainer"
+                     VerticalOptions="FillAndExpand"
+                     HorizontalOptions="Fill" />
+    </Grid>
+</ContentPage>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.FurniturePage"
+             BackgroundColor="#FBF8FF"
+             Title="Фурнитура">
+
+    <Grid RowDefinitions="Auto, *, Auto" Padding="20" RowSpacing="15">
+
+        <Label Grid.Row="0" Text="Фурнитура" FontSize="28" FontAttributes="Bold" TextColor="#312E35"/>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="12">
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="ХДФ" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.Hdf}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Напр БЕЗ доводчика" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.NaprBez}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Напр С доводчиком" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.NaprS}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Петли БЕЗ доводчика" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.PetliBez}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Петли С доводчиком" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.PetliS}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Ручка СКОБА" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.Skoba}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Ручка НАКЛАДНАЯ" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.Nakladnaya}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Ручка КНОПКА" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.Knopka}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Профиль GOLA" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Метры" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.Gola}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Труба" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.Truba}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Газ лифты" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.GazLift}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Крючки" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.Kruchki}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame BackgroundColor="White" HasShadow="True" BorderColor="Transparent" CornerRadius="12" Padding="15">
+                    <Grid ColumnDefinitions="*, 120">
+                        <Label Text="Подсветка" VerticalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="#312E35"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Кол-во" FontSize="11" TextColor="#6750A4" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Furniture.Podsvetka}" Keyboard="Numeric" Placeholder="0" HorizontalTextAlignment="Center" 
+                                   TextColor="#1C1B1F" FontSize="16" HeightRequest="40" Focused="OnEntryFocused"/>
+                            <BoxView HeightRequest="1.5" Color="#6750A4"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button Grid.Row="2" 
+                Text="СОЗДАНИЕ РАСЧЕТА" 
+                Clicked="OnFinishClicked"
+                BackgroundColor="#2B3C51"
+                TextColor="White"
+                FontAttributes="Bold"
+                FontSize="14"
+                HeightRequest="55"
+                CornerRadius="28"
+                Margin="0,5,0,0"/>
+    </Grid>
+</ContentPage>

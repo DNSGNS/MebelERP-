@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.MDFWorkshopContentView"
+             x:Name="ThisPage"
+             BackgroundColor="#FBF8FF">
+
+    <ContentView.Resources>
+        <ColumnDefinitionCollection x:Key="MdfTableColumns">
+            <ColumnDefinition Width="95"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition Width="40"/>
+        </ColumnDefinitionCollection>
+    </ContentView.Resources>
+
+    <Grid RowDefinitions="Auto, Auto, *" Padding="10" RowSpacing="10">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Padding="5,0,5,5">
+            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                <Label Text="ЗАДАЧИ МДФ" FontSize="20" FontAttributes="Bold" TextColor="#2B3C51"/>
+                <Label Text="Производственный монитор" FontSize="11" TextColor="Gray"/>
+            </VerticalStackLayout>
+            <Button Grid.Column="1" Text="🔄" Clicked="OnRefreshClicked"
+                    BackgroundColor="#6750A4" TextColor="White" HeightRequest="40" WidthRequest="45" CornerRadius="8"/>
+        </Grid>
+
+        <ScrollView Grid.Row="1" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <Border Padding="12,8" BackgroundColor="#F3EDF7" StrokeShape="RoundRectangle 12" StrokeThickness="0">
+                <HorizontalStackLayout Spacing="8">
+                    <Label Text="Цвет:" VerticalOptions="Center" TextColor="#49454F" FontAttributes="Bold" FontSize="13"/>
+                    <Picker x:Name="ColorFilterPicker" Title="Цвет" TextColor="Black" WidthRequest="130" FontSize="13" 
+                            SelectedIndexChanged="OnColorFilterChanged" BackgroundColor="White"/>
+
+                    <Button Text="ВЗЯТЬ" Clicked="OnBulkCuttingClicked" BackgroundColor="#6750A4" TextColor="White" FontSize="12" HeightRequest="40" CornerRadius="8"/>
+                    <Button Text="ОТМЕНА" Clicked="OnCancelBookingClicked" BackgroundColor="Transparent" BorderColor="#B3261E" BorderWidth="1" TextColor="#B3261E" FontSize="12" HeightRequest="40" CornerRadius="8"/>
+                    <Button Text="ГОТОВО" Clicked="OnScrapButtonClicked" BackgroundColor="#2E7D32" TextColor="White" FontSize="12" HeightRequest="40" CornerRadius="8" />
+                </HorizontalStackLayout>
+            </Border>
+        </ScrollView>
+
+        <ScrollView Grid.Row="2" Orientation="Horizontal" HorizontalScrollBarVisibility="Always">
+            <Grid  RowDefinitions="Auto, *">
+
+                <Border Grid.Row="0" BackgroundColor="#2B3C51" Padding="10,8" StrokeShape="RoundRectangle 8,8,0,0" StrokeThickness="0">
+                    <Grid ColumnDefinitions="{StaticResource MdfTableColumns}">
+                        <Label Grid.Column="0" Text="РАЗМЕР" TextColor="White" FontAttributes="Bold" FontSize="11"/>
+                        <Label Grid.Column="1" Text="ШТ" TextColor="White" FontAttributes="Bold" FontSize="11" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="2" Text="ЦВЕТ" TextColor="White" FontAttributes="Bold" FontSize="11"/>
+                        <Label Grid.Column="3" Text="ФРЕЗЕРОВКА" TextColor="White" FontAttributes="Bold" FontSize="11"/>
+                        <Label Grid.Column="4" Text="КРОМКА" TextColor="White" FontAttributes="Bold" FontSize="11" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="5" Text="ДАТА" TextColor="White" FontAttributes="Bold" FontSize="11" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="6" Text="🆗" TextColor="White" FontAttributes="Bold" FontSize="11" HorizontalTextAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <CollectionView Grid.Row="1" x:Name="TasksList">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="0,0,0,1">
+                                <Border Stroke="#E6E0E9" StrokeThickness="1" Padding="10,8" BackgroundColor="White">
+                                    <Grid ColumnDefinitions="{StaticResource MdfTableColumns}" VerticalOptions="Center">
+                                        <HorizontalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                                            <Label Text="{Binding Length}" FontSize="12" FontAttributes="Bold" TextColor="Black"/>
+                                            <Label Text="x" FontSize="12" TextColor="Gray"/>
+                                            <Label Text="{Binding Width}" FontSize="12" FontAttributes="Bold" TextColor="Black"/>
+                                        </HorizontalStackLayout>
+
+                                        <Label Grid.Column="1" Text="{Binding Count}" FontSize="13" FontAttributes="Bold" 
+                                               HorizontalTextAlignment="Center" VerticalOptions="Center" TextColor="#6750A4"/>
+
+                                        <Label Grid.Column="2" Text="{Binding Color}" FontSize="12" VerticalOptions="Center" TextColor="Black"/>
+
+                                        <Label Grid.Column="3" Text="{Binding MillingText}" FontSize="11" VerticalOptions="Center" 
+                                               TextColor="Black" LineBreakMode="TailTruncation" Margin="5,0"/>
+
+                                        <Border Grid.Column="4" BackgroundColor="#EADDFF" HorizontalOptions="Center" Padding="5,2" StrokeShape="RoundRectangle 4" StrokeThickness="0">
+                                            <Label Text="{Binding SelectedEdgeType}" FontSize="10" TextColor="#6750A4" HorizontalTextAlignment="Center"/>
+                                        </Border>
+
+                                        <Label Grid.Column="5" Text="{Binding CreationDate, StringFormat='{0:dd.MM}'}" 
+                                               FontSize="11" HorizontalTextAlignment="Center" VerticalOptions="Center" TextColor="Gray"/>
+
+                                        <CheckBox Grid.Column="6" IsChecked="{Binding IsTaken}" HorizontalOptions="Center" VerticalOptions="Center" Color="#6750A4"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </ScrollView>
+
+        <Grid x:Name="ScrapOverlay" Grid.Row="0" Grid.RowSpan="3" BackgroundColor="#80000000" IsVisible="False">
+            <Frame VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="350" BackgroundColor="White" Padding="20" CornerRadius="15">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Регистрация брака" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#2B3C51"/>
+                    <ScrollView MaximumHeightRequest="300">
+                        <VerticalStackLayout x:Name="ScrapItemsContainer" Spacing="10" />
+                    </ScrollView>
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                        <Button Grid.Column="0" Text="Отмена" Clicked="OnCancelScrapClicked" BackgroundColor="#F0F0F0" TextColor="Black"/>
+                        <Button Grid.Column="1" Text="ОК" Clicked="OnConfirmScrapClicked" BackgroundColor="#B71C1C" TextColor="White"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </Grid>
+</ContentView>

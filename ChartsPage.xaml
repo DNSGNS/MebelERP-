@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.ChartsPage"
+             Title="Статистика"
+             BackgroundColor="#F0F0F0">
+
+    <Grid RowDefinitions="300, *">
+
+        <Border Grid.Row="0" Margin="10" BackgroundColor="White" 
+                StrokeShape="RoundRectangle 10" StrokeThickness="0" Padding="10">
+            <micro:ChartView x:Name="ExpensesChart" />
+        </Border>
+
+        <CollectionView Grid.Row="1" x:Name="CategoriesList" Margin="10,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:ChartsForm">
+                    <Border Margin="0,0,0,8" Padding="15,10" BackgroundColor="White" 
+                            StrokeShape="RoundRectangle 8" StrokeThickness="0">
+                        <Grid ColumnDefinitions="5, Auto, *, Auto">
+
+                            <BoxView Grid.Column="0" Color="{Binding CategoryColor}" WidthRequest="5" VerticalOptions="Fill"/>
+
+                            <VerticalStackLayout Grid.Column="1" Margin="10,0,0,0" VerticalOptions="Center">
+                                <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="#2B3C51"/>
+                                <Label Text="{Binding Percentage, StringFormat='{0:P1}'}" FontSize="12" TextColor="Gray"/>
+                            </VerticalStackLayout>
+
+                            <Label Grid.Column="3" Text="{Binding TotalAmount, StringFormat='{0:N0} ₽'}" 
+                                   FontAttributes="Bold" TextColor="#2B3C51" VerticalOptions="Center"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

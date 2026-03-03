@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             xmlns:models="clr-namespace:MyApp1"
+             x:Class="MyApp1.FasadWarehouseContentView">
+
+    <ContentView.Resources>
+        <local:FasadTypeConverter x:Key="TypeConverter" />
+        <local:FasadEdgeTypeConverter x:Key="EdgeConverter" />
+        <local:StringBoolConverter x:Key="StringBoolConverter" />
+
+        <ColumnDefinitionCollection x:Key="FasadTableColumns">
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="2.5*"/>
+        </ColumnDefinitionCollection>
+
+        <Style x:Key="HeaderLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="#6750A4"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+        </Style>
+
+        <Style x:Key="CellEntryStyle" TargetType="Entry">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextColor" Value="#1C1B1F"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HeightRequest" Value="35"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="BackgroundColor" Value="Transparent"/>
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+    </ContentView.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Фасады" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   TextColor="#312E35"/>
+
+            <VerticalStackLayout Spacing="5">
+                <HorizontalStackLayout Spacing="10" Margin="0,0,0,5">
+                    <BoxView WidthRequest="4" HeightRequest="18" Color="#6750A4" CornerRadius="2"/>
+                    <Label Text="СТАНДАРТНЫЕ ДЕТАЛИ" FontSize="14" TextColor="#6750A4" FontAttributes="Bold" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <Grid ColumnDefinitions="{StaticResource FasadTableColumns}" Padding="5,0">
+                    <Label Grid.Column="0" Text="Длина" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="2" Text="Ширина" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="3" Text="Кол-во" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="4" Text="Тип края/Цвет/Фреза" Style="{StaticResource HeaderLabelStyle}" HorizontalOptions="Start" Margin="10,0,0,0"/>
+                </Grid>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding StandardFasads}" Spacing="0">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:FasadForm">
+                            <Grid RowDefinitions="Auto, 1">
+                                <Grid Grid.Row="0" ColumnDefinitions="{StaticResource FasadTableColumns}" Padding="0,5" VerticalOptions="Center">
+
+                                    <Entry Grid.Column="0" Text="{Binding Length}" Style="{StaticResource CellEntryStyle}"/>
+
+                                    <Label Grid.Column="1" Text="x" TextColor="#6750A4" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                    <Entry Grid.Column="2" Text="{Binding Width}" Style="{StaticResource CellEntryStyle}"/>
+
+                                    <Entry Grid.Column="3" Text="{Binding Count}" Style="{StaticResource CellEntryStyle}"/>
+
+                                    <VerticalStackLayout Grid.Column="4" Spacing="0" VerticalOptions="Center" Margin="10,0,0,0">
+                                        <Label Text="{Binding SelectedEdgeType, Converter={StaticResource EdgeConverter}, StringFormat='Тип края: {0}'}" 
+           FontSize="12" TextColor="#312E35" FontAttributes="Bold"/>
+
+                                        <Label Text="{Binding Color, StringFormat='Цвет: {0}'}" 
+           FontSize="11" TextColor="Gray" LineBreakMode="TailTruncation"
+           IsVisible="{Binding Color, Converter={StaticResource StringBoolConverter}}"/>
+
+                                        <Label Text="{Binding MillingText, StringFormat='Фреза: {0}'}" 
+           FontSize="11" TextColor="Gray" 
+           IsVisible="{Binding MillingText, Converter={StaticResource StringBoolConverter}}"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <BoxView Grid.Row="1" Color="#E0E0E0" HeightRequest="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="5">
+                <HorizontalStackLayout Spacing="10" Margin="0,0,0,5">
+                    <BoxView WidthRequest="4" HeightRequest="18" Color="#2B3C51" CornerRadius="2"/>
+                    <Label Text="СПЕЦИАЛЬНЫЕ ДЕТАЛИ" FontSize="14" TextColor="#2B3C51" FontAttributes="Bold" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <Grid ColumnDefinitions="{StaticResource FasadTableColumns}" Padding="5,0">
+                    <Label Grid.Column="0" Text="Длина" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="2" Text="Ширина" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="3" Text="Кол." Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="4" Text="Тип детали/Тип края/Цвет/Фреза" Style="{StaticResource HeaderLabelStyle}" HorizontalOptions="Start" Margin="10,0,0,0"/>
+                </Grid>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding SpecialFasads}" Spacing="0">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:FasadForm">
+                            <Grid RowDefinitions="Auto, 1">
+                                <Grid Grid.Row="0" ColumnDefinitions="{StaticResource FasadTableColumns}" Padding="0,5" VerticalOptions="Center">
+                                    <Entry Grid.Column="0" Text="{Binding Length}" Style="{StaticResource CellEntryStyle}"/>
+                                    <Label Grid.Column="1" Text="x" TextColor="#2B3C51" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Entry Grid.Column="2" Text="{Binding Width}" Style="{StaticResource CellEntryStyle}"/>
+                                    <Entry Grid.Column="3" Text="{Binding Count}" Style="{StaticResource CellEntryStyle}"/>
+
+                                    <VerticalStackLayout Grid.Column="4" Spacing="0" VerticalOptions="Center" Margin="10,0,0,0">
+                                        <Label FontSize="12" TextColor="#312E35">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding SelectedType, Converter={StaticResource TypeConverter}}" FontAttributes="Bold" />
+                                                    <Span Text=", " FontAttributes="Bold" />
+                                                    <Span Text="{Binding SelectedEdgeType, Converter={StaticResource EdgeConverter}}" FontAttributes="Bold" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                        <Label Text="{Binding Color, StringFormat='Цвет: {0}'}" 
+           FontSize="11" TextColor="Gray" IsVisible="{Binding Color, Converter={StaticResource StringBoolConverter}}"/>
+
+                                        <Label Text="{Binding MillingText, StringFormat='Фреза: {0}'}" 
+           FontSize="11" TextColor="Gray" IsVisible="{Binding MillingText, Converter={StaticResource StringBoolConverter}}"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <BoxView Grid.Row="1" Color="#E0E0E0" HeightRequest="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="5">
+                <HorizontalStackLayout Spacing="10" Margin="0,0,0,5">
+                    <BoxView WidthRequest="4" HeightRequest="18" Color="#2B3C51" CornerRadius="2"/>
+                    <Label Text="НЕСТАНДАРТНАЯ ФРЕЗ." FontSize="14" TextColor="#2B3C51" FontAttributes="Bold" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <Grid ColumnDefinitions="{StaticResource FasadTableColumns}" Padding="5,0">
+                    <Label Grid.Column="0" Text="Длина" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="2" Text="Ширина" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="3" Text="Кол." Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="4" Text="Тип детали/Тип края/Цвет/Фреза" Style="{StaticResource HeaderLabelStyle}" HorizontalOptions="Start" Margin="10,0,0,0"/>
+                </Grid>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding NonStandardFasads}" Spacing="0">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:FasadForm">
+                            <Grid RowDefinitions="Auto, 1">
+                                <Grid Grid.Row="0" ColumnDefinitions="{StaticResource FasadTableColumns}" Padding="0,5" VerticalOptions="Center">
+                                    <Entry Grid.Column="0" Text="{Binding Length}" Style="{StaticResource CellEntryStyle}"/>
+                                    <Label Grid.Column="1" Text="x" TextColor="#2B3C51" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Entry Grid.Column="2" Text="{Binding Width}" Style="{StaticResource CellEntryStyle}"/>
+                                    <Entry Grid.Column="3" Text="{Binding Count}" Style="{StaticResource CellEntryStyle}"/>
+
+                                    <VerticalStackLayout Grid.Column="4" Spacing="0" VerticalOptions="Center" Margin="10,0,0,0">
+                                        <Label FontSize="12" TextColor="#312E35">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding SelectedType, Converter={StaticResource TypeConverter}}" FontAttributes="Bold" />
+                                                    <Span Text=", " FontAttributes="Bold" />
+                                                    <Span Text="{Binding SelectedEdgeType, Converter={StaticResource EdgeConverter}}" FontAttributes="Bold" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                        <Label Text="{Binding Color, StringFormat='Цвет: {0}'}" 
+           FontSize="11" TextColor="Gray" IsVisible="{Binding Color, Converter={StaticResource StringBoolConverter}}"/>
+
+                                        <Label Text="{Binding MillingText, StringFormat='Фреза: {0}'}" 
+           FontSize="11" TextColor="Gray" IsVisible="{Binding MillingText, Converter={StaticResource StringBoolConverter}}"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <BoxView Grid.Row="1" Color="#E0E0E0" HeightRequest="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

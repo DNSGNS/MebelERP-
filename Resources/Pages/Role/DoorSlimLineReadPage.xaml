@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.DoorSlimLineReadPage"
+             Title="Slim Line (Просмотр)"
+             BackgroundColor="#F7F2FA">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- ================= Параметры проёма ================= -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="12"
+                   HasShadow="False"
+                   BorderColor="#CAC4D0"
+                   Padding="20">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Параметры проёма"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#6750A4"/>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Выберите вариант установки дверей:"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Picker ItemsSource="{Binding InstallationTypes}"
+                                SelectedIndex="{Binding SelectedInstallationTypeIndex}"
+                                TextColor="#1C1B1F"
+                                FontSize="15"
+                                IsEnabled="False"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Высота проёма (мм):"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Entry Text="{Binding OpeningHeight}"
+                               IsReadOnly="True"
+                               IsEnabled="False"
+                               TextColor="#1C1B1F"
+                               BackgroundColor="Transparent"
+                               FontSize="15"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Ширина проёма, перекрываемого дверями (мм):"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Entry Text="{Binding OpeningWidth}"
+                               IsReadOnly="True"
+                               IsEnabled="False"
+                               TextColor="#1C1B1F"
+                               BackgroundColor="Transparent"
+                               FontSize="15"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Расположение дверей:"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Picker ItemsSource="{Binding DoorArrangements}"
+                                SelectedIndex="{Binding SelectedArrangementIndex}"
+                                TextColor="#1C1B1F"
+                                FontSize="15"
+                                IsEnabled="False"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Цвет профиля:"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Picker ItemsSource="{Binding ProfileColors}"
+                                SelectedIndex="{Binding SelectedColorIndex}"
+                                TextColor="#1C1B1F"
+                                FontSize="15"
+                                IsEnabled="False"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Количество дверей:"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding DoorsCount}"
+                               FontSize="16"
+                               TextColor="#6750A4"
+                               Padding="0,5"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Количество перекрытий:"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding OverlapsCount}"
+                               FontSize="16"
+                               TextColor="#6750A4"
+                               Padding="0,5"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Количество средних рамок для одной двери:"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Picker ItemsSource="{Binding MiddleFramesOptions}"
+                                SelectedIndex="{Binding MiddleFramesCountIndex}"
+                                TextColor="#1C1B1F"
+                                FontSize="15"
+                                IsEnabled="False"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ================= Наполнение дверей ================= -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="12"
+                   HasShadow="False"
+                   BorderColor="#6750A4"
+                   Padding="15">
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Наполнение дверей"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#6750A4"/>
+
+                    <Grid ColumnDefinitions="2*, 2.5*, 1.5*, 1.5*, 1*" Padding="0,5">
+                        <Label Grid.Column="0" Text="Тип" FontSize="11" FontAttributes="Bold" TextColor="#6750A4"/>
+                        <Label Grid.Column="1" Text="Материал" FontSize="11" FontAttributes="Bold" TextColor="#6750A4"/>
+                        <Label Grid.Column="2" Text="Высота" FontSize="11" FontAttributes="Bold" TextColor="#6750A4" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="3" Text="Ширина" FontSize="11" FontAttributes="Bold" TextColor="#6750A4" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="4" Text="Кол-во" FontSize="11" FontAttributes="Bold" TextColor="#6750A4" HorizontalTextAlignment="Center"/>
+                    </Grid>
+
+                    <BoxView HeightRequest="1.5" Color="#6750A4"/>
+
+                    <CollectionView ItemsSource="{Binding Inserts}" HeightRequest="310">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <VerticalStackLayout>
+                                    <Grid ColumnDefinitions="2*, 2.5*, 1.5*, 1.5*, 1*"
+                                          Padding="0,8"
+                                          VerticalOptions="Center">
+
+                                        <Label Grid.Column="0"
+                                               Text="{Binding Name}"
+                                               VerticalOptions="Center"
+                                               FontSize="15"
+                                               TextColor="#1C1B1F"/>
+
+                                        <Picker Grid.Column="1" 
+                                                ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type local:DoorSlimLineForm}}, Path=MaterialOptions}"
+                                                SelectedIndex="{Binding MaterialIndex}"
+                                                IsEnabled="False"
+                                                TextColor="#1C1B1F" FontSize="15" VerticalOptions="Center"/>
+                                        <Picker Grid.Column="1" 
+                                                TextColor="#1C1B1F" 
+                                                IsEnabled="False"
+                                                FontSize="15" 
+                                                VerticalOptions="Center"
+                                                ItemsSource="{Binding MaterialOptions}" 
+                                                SelectedIndex="{Binding MaterialIndex, Mode=TwoWay}"/>
+                                        <Entry Grid.Column="2"
+                                               Text="{Binding Height}"
+                                               IsReadOnly="True"
+                                               IsEnabled="False"
+                                               TextColor="#1C1B1F"
+                                               HorizontalTextAlignment="Center"
+                                               FontSize="15"
+                                               VerticalOptions="Center"/>
+
+                                        <Label Grid.Column="3"
+                                               Text="{Binding Width, StringFormat='{0:F0}'}"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center"
+                                               FontSize="15"
+                                               TextColor="#1C1B1F"/>
+
+                                        <Label Grid.Column="4"
+                                               Text="{Binding Count}"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center"
+                                               FontSize="15"
+                                               TextColor="#1C1B1F"/>
+                                    </Grid>
+
+                                    <BoxView HeightRequest="0.5" Color="#CAC4D0"/>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ================= Ошибки ================= -->
+            <Label Text="{Binding ErrorMessage}"
+                   IsVisible="{Binding ErrorMessage, Converter={local:StringBoolConverter}}"
+                   TextColor="#B3261E"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <!-- ================= Параметры одной двери ================= -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="12"
+                   HasShadow="False"
+                   BorderColor="#6750A4"
+                   Padding="20">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Параметры одной двери"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#6750A4"/>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Высота (мм):"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding DoorHeight, StringFormat='{0:F1}'}"
+                               FontSize="16"
+                               TextColor="#1C1B1F"
+                               Padding="0,5"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Ширина (мм):"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding DoorWidth, StringFormat='{0:F1}'}"
+                               FontSize="16"
+                               TextColor="#1C1B1F"
+                               Padding="0,5"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Вес (кг):"
+                               TextColor="#6750A4"
+                               FontSize="15"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding DoorWeight, StringFormat='{0:F0}'}"
+                               FontSize="16"
+                               TextColor="#1C1B1F"
+                               Padding="0,5"/>
+                        <BoxView HeightRequest="1" Color="#CAC4D0"/>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ================= Профили (фурнитура) ================= -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="12"
+                   HasShadow="False"
+                   BorderColor="#CAC4D0"
+                   Padding="15">
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Профили"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#6750A4"/>
+
+                    <Grid ColumnDefinitions="*, Auto, Auto" Padding="5,0">
+                        <Label Grid.Column="0" Text="Наименование" FontAttributes="Bold" FontSize="15" TextColor="#6750A4"/>
+                        <Label Grid.Column="1" Text="Размер" FontAttributes="Bold" WidthRequest="70" HorizontalTextAlignment="Center" FontSize="15" TextColor="#6750A4"/>
+                        <Label Grid.Column="2" Text="Кол-во" FontAttributes="Bold" WidthRequest="70" HorizontalTextAlignment="Center" FontSize="15" TextColor="#6750A4"/>
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="#6750A4"/>
+
+                    <CollectionView ItemsSource="{Binding Profiles}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <VerticalStackLayout>
+                                    <Grid ColumnDefinitions="*, Auto, Auto" Padding="5,10">
+                                        <Label Grid.Column="0"
+                                               Text="{Binding Name}"
+                                               FontSize="15"
+                                               TextColor="#1C1B1F"
+                                               VerticalOptions="Center"/>
+
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Size, StringFormat='{0:F0} мм'}"
+                                               WidthRequest="70"
+                                               HorizontalTextAlignment="Center"
+                                               FontSize="15"
+                                               TextColor="#1C1B1F"
+                                               VerticalOptions="Center"/>
+
+                                        <Label Grid.Column="2"
+                                               Text="{Binding Count}"
+                                               WidthRequest="70"
+                                               HorizontalTextAlignment="Center"
+                                               FontSize="15"
+                                               TextColor="#1C1B1F"
+                                               VerticalOptions="Center"/>
+                                    </Grid>
+
+                                    <BoxView HeightRequest="0.5" Color="#CAC4D0" Margin="5,0"/>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

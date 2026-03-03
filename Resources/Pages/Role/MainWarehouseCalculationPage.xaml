@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.MainCalculationWarehousePage"
+             x:DataType="local:MainCalculationWarehousePage"
+             Title="Расчеты проектов"
+             BackgroundColor="#F0F0F0">
+
+    <Grid RowDefinitions="Auto, *">
+        <Grid Grid.Row="0" ColumnDefinitions="*" ColumnSpacing="8" Margin="10,15">
+            <Button Grid.Column="0" Text="📂 ОБНОВИТЬ" Clicked="OnLoadAllClicked" BackgroundColor="#455A64" TextColor="White" HeightRequest="45" FontSize="11" CornerRadius="8"/>
+        </Grid>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding ProjectsList}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:ProjectData">
+                    <VerticalStackLayout Margin="10,5">
+
+                        <Frame Padding="12" BackgroundColor="White" CornerRadius="10" HasShadow="True" BorderColor="#CCCCCC">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnProjectTapped"/>
+                            </Frame.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="*, Auto, Auto" ColumnSpacing="8">
+                                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="{Binding ProjectName}" TextColor="Black" FontAttributes="Bold" FontSize="15" VerticalOptions="Center"/>
+                                    </HorizontalStackLayout>
+
+                                    <Label Text="{Binding CreationDate, StringFormat='{0:dd.MM.yyyy}'}" TextColor="Gray" FontSize="11"/>
+
+                                    <Label Text="{Binding Status}" TextColor="#6750A4" FontSize="11" FontAttributes="Italic" IsVisible="{Binding IsExpanded}"/>
+
+                                    <Label Text="{Binding TotalProjectPrice, StringFormat='{0:N0} ₽'}" FontSize="18" TextColor="#2B3C51" FontAttributes="Bold"/>
+
+                                    <HorizontalStackLayout Spacing="10" Margin="0,5,0,0" IsVisible="{Binding IsExpanded}">
+                                        <HorizontalStackLayout Spacing="2">
+                                            <CheckBox IsChecked="{Binding IsMaterialReady}" 
+                      CheckedChanged="OnWarehouseStatusChanged"
+                      Visual="Material" Color="#6750A4"/>
+                                            <Label Text="Мат." VerticalOptions="Center" FontSize="11" TextColor="Black"/>
+                                        </HorizontalStackLayout>
+
+                                        <HorizontalStackLayout Spacing="2" IsVisible="{Binding IsExpanded}">
+                                            <CheckBox IsChecked="{Binding IsFurnitureReady}" 
+                      CheckedChanged="OnWarehouseStatusChanged"
+                      Visual="Material" Color="#6750A4"/>
+                                            <Label Text="Фурн." VerticalOptions="Center" FontSize="11" TextColor="Black"/>
+                                        </HorizontalStackLayout>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+
+                                <Button Grid.Column="1" Text="📋" WidthRequest="38" HeightRequest="38" CornerRadius="19" Padding="0"
+                                        IsVisible="{Binding IsExpanded}" BackgroundColor="#E8F5E9" TextColor="#2E7D32"
+                                        Clicked="OnReportClicked" CommandParameter="{Binding .}"/>
+
+                                <Label Grid.Column="2" Text="{Binding Objects.Count, StringFormat='({0})'}" VerticalOptions="Center" TextColor="#555555" FontSize="12"/>
+                            </Grid>
+                        </Frame>
+
+                        <Border IsVisible="{Binding IsExpanded}" Margin="5,-5,5,5" Padding="10" BackgroundColor="#E5E5E5">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="0,0,10,10" />
+                            </Border.StrokeShape>
+
+                            <VerticalStackLayout Spacing="10">
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Objects}" Spacing="5">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="local:ObjectData">
+                                            <Frame Padding="10" CornerRadius="5" HasShadow="False" BackgroundColor="White" BorderColor="#CCCCCC">
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnObjectTapped"/>
+                                                </Frame.GestureRecognizers>
+
+                                                <VerticalStackLayout Spacing="0">
+
+                                                    <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="10" VerticalOptions="Center">
+
+                                                        <Border Grid.Column="0" IsVisible="{Binding HasImage}" StrokeShape="RoundRectangle 8" WidthRequest="45" HeightRequest="45">
+                                                            <Border.GestureRecognizers>
+                                                                <TapGestureRecognizer Tapped="OnImageTapped" CommandParameter="{Binding ImagePath}"/>
+                                                            </Border.GestureRecognizers>
+                                                            <Image Source="{Binding ImagePath}" Aspect="AspectFill" />
+                                                        </Border>
+
+                                                        <Label Grid.Column="1" Text="{Binding ObjectName}" TextColor="Black" FontSize="15" 
+                       VerticalOptions="Center" LineBreakMode="TailTruncation"/>
+
+                                                        <Label Grid.Column="2" Text="{Binding Summary.TotalCost, StringFormat='{0:N0} ₽'}" 
+                       IsVisible="{Binding IsExpanded}"
+                       TextColor="#2E7D32" VerticalOptions="Center" FontAttributes="Bold" FontSize="14"/>
+                                                    </Grid>
+
+                                                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10" Margin="0,15,0,0" IsVisible="{Binding IsExpanded}">
+
+                                                        <Button Grid.Column="0" Text="📝" HeightRequest="40" Padding="0" CornerRadius="8"
+                        BackgroundColor="#E3F2FD" TextColor="#1565C0" 
+                        Clicked="OnEditObjectClicked" 
+                        CommandParameter="{Binding Source={RelativeSource AncestorType={x:Type local:ProjectData}}}"/>
+
+                                                        <Button Grid.Column="1" Text="✂️" HeightRequest="40" Padding="0" CornerRadius="8"
+                        BackgroundColor="#FFF3E0" TextColor="#E65100" 
+                        Clicked="OnCuttingClicked" CommandParameter="{Binding .}"/>
+                                                    </Grid>
+
+                                                </VerticalStackLayout>
+                                            </Frame>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Grid Grid.RowSpan="2" BackgroundColor="#80000000" IsVisible="{Binding IsUpdating}" InputTransparent="False">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
+                <ActivityIndicator IsRunning="{Binding IsUpdating}" Color="White" HeightRequest="60" WidthRequest="60"/>
+                <Label Text="Загрузка данных..." TextColor="White" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

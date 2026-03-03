@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyApp1.SlimLineInstructionsPage"
+             Title="Схемы сборки Slim Line"
+             BackgroundColor="#F0F0F0">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="15">
+            <Label Text="Инструкции и схемы"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   TextColor="#312E35"
+                   HorizontalOptions="Center"/>
+            <!-- Карточка 1 -->
+            <Frame Padding="0"
+                   CornerRadius="12"
+                   IsClippedToBounds="True"
+                   HasShadow="True"
+                   BorderColor="#E0E0E0">
+                <Grid RowDefinitions="120, Auto">
+                    <Image Grid.Row="0"
+                           Source="image_var_ust_dv1.png"
+                           Aspect="AspectFill"
+                           HeightRequest="120">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnImageTapped"
+                              CommandParameter="image_var_ust_dv1.png"/>
+                        </Image.GestureRecognizers>
+
+                    </Image>
+                    <VerticalStackLayout Grid.Row="1"
+                                         Padding="15"
+                                         BackgroundColor="White">
+                        <Label Text="Видимый верхний трек"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#312E35"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Frame>
+            <!-- Карточка 2 -->
+            <Frame Padding="0"
+                   CornerRadius="12"
+                   IsClippedToBounds="True"
+                   HasShadow="True"
+                   BorderColor="#E0E0E0">
+
+                <Grid RowDefinitions="120, Auto">
+                    <Image Grid.Row="0"
+                           Source="image_var_ust_dv2.png"
+                           Aspect="AspectFill"
+                           HeightRequest="120">
+
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnImageTapped"
+                              CommandParameter="image_var_ust_dv2.png"/>
+                        </Image.GestureRecognizers>
+
+                    </Image>
+
+                    <VerticalStackLayout Grid.Row="1"
+                                         Padding="15"
+                                         BackgroundColor="White">
+                        <Label Text="Скрытый верхний трек, корпус"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#312E35"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Frame>
+            <!-- Карточка 3 -->
+            <Frame Padding="0"
+                   CornerRadius="12"
+                   IsClippedToBounds="True"
+                   HasShadow="True"
+                   BorderColor="#E0E0E0">
+
+                <Grid RowDefinitions="120, Auto">
+                    <Image Grid.Row="0"
+                           Source="image_var_ust_dv3.png"
+                           Aspect="AspectFill"
+                           HeightRequest="120">
+
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnImageTapped"
+                              CommandParameter="image_var_ust_dv3.png"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <VerticalStackLayout Grid.Row="1"
+                                         Padding="15"
+                                         BackgroundColor="White">
+                        <Label Text="Скрытый верхний трек, проем"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#312E35"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

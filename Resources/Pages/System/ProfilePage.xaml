@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.ProfilePage"
+             Title="Профиль"
+             BackgroundColor="#F0F0F0">
+
+    <ContentPage.Resources>
+        <local:WorkPositionConverter x:Key="WorkPositionConverter" />
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Frame BackgroundColor="White" CornerRadius="15" HasShadow="True" Padding="20">
+                <VerticalStackLayout Spacing="15" HorizontalOptions="Center">
+
+                    <Border StrokeShape="RoundRectangle 40" HeightRequest="80" WidthRequest="80" 
+                            BackgroundColor="#2B3C51" HorizontalOptions="Center">
+                        <Label Text="👤" FontSize="40" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Border>
+
+                    <Label Text="{Binding Name}" 
+                           FontSize="22" FontAttributes="Bold" 
+                           TextColor="#2B3C51" HorizontalOptions="Center"/>
+
+                    <Label Text="{Binding Position, Converter={StaticResource WorkPositionConverter}}" 
+                           FontSize="16" TextColor="Gray" HorizontalOptions="Center"/>
+
+                    <BoxView HeightRequest="1" Color="#EEEEEE"/>
+
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label Text="Логин:" FontAttributes="Bold" TextColor="#555555"/>
+                        <Label Text="{Binding Username}" TextColor="#2B3C51"/>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+            <Button Text="ОБНОВИТЬ ДАННЫЕ"
+                    Clicked="OnRefreshClicked"
+                    BackgroundColor="#2B3C51"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="50"/>
+            <Button Text="ВЫЙТИ ИЗ АККАУНТА" 
+                    Clicked="OnLogoutClicked"
+                    BackgroundColor="#C62828" 
+                    TextColor="White" 
+                    CornerRadius="10" 
+                    HeightRequest="50"/>
+            <ActivityIndicator x:Name="RefreshIndicator"
+                   IsVisible="False"
+                   IsRunning="False"
+                   Color="#2B3C51"
+                   HorizontalOptions="Center"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

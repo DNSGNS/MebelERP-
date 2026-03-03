@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.ProjectReportPage"
+             Title="Отчет по проекту"
+             BackgroundColor="#F5F5F5">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ReportCardStyle" TargetType="Frame">
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="HasShadow" Value="True"/>
+                <Setter Property="Padding" Value="15"/>
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="BorderColor" Value="Transparent"/>
+            </Style>
+            <Style x:Key="HeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="#2B3C51"/>
+            </Style>
+            <Style x:Key="SeparatorStyle" TargetType="BoxView">
+                <Setter Property="HeightRequest" Value="1"/>
+                <Setter Property="Color" Value="#E0E0E0"/>
+                <Setter Property="Margin" Value="0,5"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="15" Spacing="15">
+
+                <Label Text="{Binding ProjectName}" FontSize="22" FontAttributes="Bold" 
+                       TextColor="#2B3C51" HorizontalOptions="Center"/>
+
+                <Frame Style="{StaticResource ReportCardStyle}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="СПИСОК ОБЪЕКТОВ" Style="{StaticResource HeaderLabelStyle}"/>
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Objects}" Spacing="8">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="local:ObjectData">
+                                    <Grid ColumnDefinitions="*, Auto">
+                                        <Label Grid.Column="0" Text="{Binding ObjectName}" TextColor="Black" FontSize="14"/>
+                                        <Label Grid.Column="1" Text="{Binding Summary.TotalCost, StringFormat='{0:N0} ₽'}" 
+                                               TextColor="#2E7D32" FontAttributes="Bold"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+                        <Grid ColumnDefinitions="*, Auto">
+                            <Label Grid.Column="0" 
+                            Text="Всего объектов:" TextColor="Gray"/>
+                            <Label Grid.Column="1" Text="{Binding Objects.Count}" TextColor="Black" FontAttributes="Bold"/>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource ReportCardStyle}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="СВОДНАЯ ФУРНИТУРА (КОЛ-ВО)" Style="{StaticResource HeaderLabelStyle}"/>
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+
+                        <Label Text="{Binding TotalFurniture.Hdf, StringFormat='ХДФ: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.NaprBez, StringFormat='Напр. БЕЗ дов.: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.NaprS, StringFormat='Напр. С дов.: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.PetliBez, StringFormat='Петли БЕЗ дов.: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.PetliS, StringFormat='Петли С дов.: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.Skoba, StringFormat='Ручка СКОБА: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.Nakladnaya, StringFormat='Ручка НАКЛАД.: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.Knopka, StringFormat='Ручка КНОПКА: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.Gola, StringFormat='Профиль GOLA: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.Truba, StringFormat='Труба: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.GazLift, StringFormat='Газ-лифты: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.Kruchki, StringFormat='Крючки: {0} шт.'}" TextColor="Black"/>
+                        <Label Text="{Binding TotalFurniture.Podsvetka, StringFormat='Подсветка: {0} шт.'}" TextColor="Black"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding AllProfiles}" Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="local:FurnitureProfileForm">
+                            <Frame Style="{StaticResource ReportCardStyle}" Padding="15,15,15,15">
+                                <VerticalStackLayout Spacing="5">
+
+                                    <Label Text="ПРОФИЛИ" 
+                           Style="{StaticResource HeaderLabelStyle}"
+                           TextColor="#2B3C51"/>
+
+                                    <BoxView Style="{StaticResource SeparatorStyle}"/>
+
+                                    <Grid ColumnDefinitions="*, 70, 70" Padding="10,5">
+                                        <Label Text="НАИМЕНОВАНИЕ" FontAttributes="Bold" FontSize="11" TextColor="#2B3C51" VerticalOptions="Center"/>
+                                        <Label Grid.Column="1" Text="РАЗМЕР" FontAttributes="Bold" FontSize="11" TextColor="#2B3C51" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                                        <Label Grid.Column="2" Text="КОЛ-ВО" FontAttributes="Bold" FontSize="11" TextColor="#2B3C51" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*, 70, 70" Padding="10,8">
+                                        <Label Text="{Binding TopGuideName}" FontSize="13" TextColor="#1C1B1F" VerticalOptions="Center"/>
+                                        <Label Grid.Column="1" Text="{Binding TopGuideSize, StringFormat='{0:F0} мм'}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                        <Label Grid.Column="2" Text="{Binding TopGuideCount}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="#CAC4D0" Margin="10,0"/>
+
+                                    <Grid ColumnDefinitions="*, 70, 70" Padding="10,8">
+                                        <Label Text="{Binding BottomGuideName}" FontSize="13" TextColor="#1C1B1F" VerticalOptions="Center"/>
+                                        <Label Grid.Column="1" Text="{Binding BottomGuideSize, StringFormat='{0:F0} мм'}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                        <Label Grid.Column="2" Text="{Binding BottomGuideCount}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="#CAC4D0" Margin="10,0"/>
+
+                                    <Grid ColumnDefinitions="*, 70, 70" Padding="10,8">
+                                        <Label Text="{Binding VerticalSlimName}" FontSize="13" TextColor="#1C1B1F" VerticalOptions="Center"/>
+                                        <Label Grid.Column="1" Text="{Binding VerticalSlimSize, StringFormat='{0:F0} мм'}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                        <Label Grid.Column="2" Text="{Binding VerticalSlimCount}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="#CAC4D0" Margin="10,0"/>
+
+                                    <Grid ColumnDefinitions="*, 70, 70" Padding="10,8">
+                                        <Label Text="{Binding NarrowFrameName}" FontSize="13" TextColor="#1C1B1F" VerticalOptions="Center"/>
+                                        <Label Grid.Column="1" Text="{Binding NarrowFrameSize, StringFormat='{0:F0} мм'}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                        <Label Grid.Column="2" Text="{Binding NarrowFrameCount}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="#CAC4D0" Margin="10,0"/>
+
+                                    <Grid ColumnDefinitions="*, 70, 70" Padding="10,8">
+                                        <Label Text="{Binding WideFrameName}" FontSize="13" TextColor="#1C1B1F" VerticalOptions="Center"/>
+                                        <Label Grid.Column="1" Text="{Binding WideFrameSize, StringFormat='{0:F0} мм'}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                        <Label Grid.Column="2" Text="{Binding WideFrameCount}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="#CAC4D0" Margin="10,0"/>
+
+                                    <Grid ColumnDefinitions="*, 70, 70" Padding="10,8">
+                                        <Label Text="{Binding MiddleFrameName}" FontSize="13" TextColor="#1C1B1F" VerticalOptions="Center"/>
+                                        <Label Grid.Column="1" Text="{Binding MiddleFrameSize, StringFormat='{0:F0} мм'}" FontSize="13" TextColor="#1C1B1F"  HorizontalTextAlignment="Center"/>
+                                        <Label Grid.Column="2" Text="{Binding MiddleFrameCount}" FontSize="13" TextColor="#1C1B1F" HorizontalTextAlignment="Center"/>
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <Frame Style="{StaticResource ReportCardStyle}" BorderColor="#2B3C51">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="УСЛУГИ И ПРОИЗВОДСТВО" Style="{StaticResource HeaderLabelStyle}"/>
+                        <BoxView Style="{StaticResource SeparatorStyle}"/>
+
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="3">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Цех:" TextColor="Black"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding WorkshopCost, StringFormat='{0:N0} ₽'}" TextColor="Black"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Упаковка:" TextColor="Black"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding PackagingCost, StringFormat='{0:N0} ₽'}" TextColor="Black"/>
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="Установка:" TextColor="Black"/>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding InstallationCost, StringFormat='{0:N0} ₽'}" TextColor="Black"/>
+
+                            <Label Grid.Row="3" Grid.Column="0" Text="Доставка:" TextColor="Black"/>
+                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding DeliveryCost, StringFormat='{0:N0} ₽'}" TextColor="Black"/>
+
+                            <Label Grid.Row="4" Grid.Column="0" Text="Подъем:" TextColor="Black"/>
+                            <Label Grid.Row="4" Grid.Column="1" Text="{Binding LiftingCost, StringFormat='{0:N0} ₽'}" TextColor="Black"/>
+
+                            <Label Grid.Row="5" Grid.Column="0" Text="Вывоз мусора:" TextColor="Black"/>
+                            <Label Grid.Row="5" Grid.Column="1" Text="{Binding GarbageRemovalCost, StringFormat='{0:N0} ₽'}" TextColor="Black"/>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource ReportCardStyle}" Padding="20,20,20,20">
+                    <VerticalStackLayout>
+                        <VerticalStackLayout HorizontalOptions="Center">
+                            <Label Text="ИТОГО ЗА ПРОЕКТ:" HorizontalTextAlignment="Center" FontSize="14" FontAttributes="Bold" TextColor="Gray"/>
+                            <Label Text="{Binding TotalProjectPrice, StringFormat='{0:N0} ₽'}" 
+                   HorizontalTextAlignment="Center" FontSize="32" FontAttributes="Bold" TextColor="#6750A4"/>
+                        </VerticalStackLayout>
+
+                        <BoxView Style="{StaticResource SeparatorStyle}" Margin="0,0,0,0"/>
+
+                        <Grid ColumnDefinitions="*, 150" VerticalOptions="Center">
+                            <Label Grid.Column="0" Text="Предоплата:" VerticalOptions="Center" TextColor="Black" FontSize="16"/>
+                            <Entry Grid.Column="1" 
+                   Text="{Binding Prepayment}" 
+                   Keyboard="Numeric" 
+                   HorizontalTextAlignment="End" 
+                   Placeholder="0"
+                   TextColor="#2E7D32"
+                   FontAttributes="Bold"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*, Auto">
+                            <Label Text="Остаток:" TextColor="Gray" FontSize="16"/>
+                            <Label Grid.Column="1" 
+                   Text="{Binding RemainingBalance, StringFormat='{0:N0} ₽'}" 
+                   TextColor="Red" 
+                   FontAttributes="Bold" 
+                   FontSize="18"/>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Frame Grid.Row="1" BackgroundColor="White" Padding="20,15" HasShadow="True" CornerRadius="0">
+            <Button Text="ЗАКРЫТЬ ОТЧЕТ" 
+                    Clicked="OnCloseClicked"
+                    BackgroundColor="#6750A4" 
+                    TextColor="White" 
+                    FontAttributes="Bold" 
+                    HeightRequest="55" 
+                    CornerRadius="12"/>
+        </Frame>
+    </Grid>
+</ContentPage>

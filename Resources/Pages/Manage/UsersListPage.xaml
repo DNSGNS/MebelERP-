@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.UsersListPage"
+             Title="Сотрудники"
+             BackgroundColor="#F0F0F0">
+
+    <ContentPage.Resources>
+        <local:WorkPositionConverter x:Key="WorkPositionConverter" />
+
+        <Style x:Key="HeaderLabelStyle" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <Style x:Key="DataLabelStyle" TargetType="Entry">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="BackgroundColor" Value="Transparent"/>
+            <Setter Property="TextColor" Value="#2B3C51"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="ClearButtonVisibility" Value="Never"/>
+
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *">
+
+        <Border Grid.Row="0" Margin="10" Padding="15,10" BackgroundColor="White" StrokeShape="RoundRectangle 8" StrokeThickness="0">
+            <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
+                <Label Grid.Column="0" 
+                       Text="Список сотрудников" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       TextColor="#2B3C51" 
+                       VerticalOptions="Center"/>
+
+                <Button Grid.Column="1" 
+                        Text="Добавить сотрудника" 
+                        Clicked="OnAddUserClicked"
+                        BackgroundColor="#2B3C51" 
+                        TextColor="White" 
+                        HeightRequest="40" 
+                        CornerRadius="8"
+                        FontAttributes="Bold"/>
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Row="1" Padding="10,0,10,10" Orientation="Both">
+            <VerticalStackLayout Spacing="5">
+
+                <Border BackgroundColor="#2B3C51" StrokeThickness="0" Padding="0,12" StrokeShape="RoundRectangle 8">
+                    <Grid ColumnDefinitions="150, 140, 120, 120, 100" ColumnSpacing="5">
+                        <Label Grid.Column="0" Text="Имя" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="1" Text="Должность" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="2" Text="Логин" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="3" Text="Пароль" Style="{StaticResource HeaderLabelStyle}"/>
+                        <Label Grid.Column="4" Text="" Style="{StaticResource HeaderLabelStyle}"/>
+                    </Grid>
+                </Border>
+
+                <VerticalStackLayout x:Name="UsersStackLayout" BindableLayout.ItemsSource="{Binding Users}" Spacing="5">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border StrokeThickness="0" BackgroundColor="White" Padding="0,12" StrokeShape="RoundRectangle 8">
+                                <Grid ColumnDefinitions="150, 140, 120, 120, 100" ColumnSpacing="5">
+                                    <Entry  Grid.Column="0" Text="{Binding Name}" Style="{StaticResource DataLabelStyle}" FontAttributes="Bold"/>
+
+                                    <Entry  Grid.Column="1" Text="{Binding Position, Converter={StaticResource WorkPositionConverter}}" Style="{StaticResource DataLabelStyle}"/>
+
+                                    <Entry  Grid.Column="2" Text="{Binding Username}" Style="{StaticResource DataLabelStyle}"/>
+                                    <Entry  Grid.Column="3" Text="{Binding Password}" Style="{StaticResource DataLabelStyle}"/>
+
+
+
+                                    <StackLayout Grid.Column="4" Orientation="Horizontal" HorizontalOptions="Center" Spacing="15">
+
+                                        <Label Text="✏️" FontSize="20" TextColor="#2B3C51">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnEditUserTapped" CommandParameter="{Binding .}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+
+                                        <Label Text="🗑️" FontSize="20" TextColor="Red">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnDeleteUserTapped" CommandParameter="{Binding .}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+
+                                    </StackLayout>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.RowSpan="2" BackgroundColor="#80000000" IsVisible="{Binding IsBusy}">
+            <ActivityIndicator IsRunning="True" Color="White" VerticalOptions="Center" HorizontalOptions="Center"/>
+        </Grid>
+
+    </Grid>
+</ContentPage>

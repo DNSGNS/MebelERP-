@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.Resources.ContentViews.Workshop.DoorWorkshopContentView"
+             BackgroundColor="#FBF8FF">
+
+    <ContentView.Resources>
+        <ColumnDefinitionCollection x:Key="DoorTableColumns">
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="90"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="50"/>
+        </ColumnDefinitionCollection>
+    </ContentView.Resources>
+
+    <Grid RowDefinitions="Auto, *" Padding="10">
+
+        <!-- ===== HEADER ===== -->
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,15">
+            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                <Label Text="ДВЕРИ И ПРОФИЛИ" FontSize="20" FontAttributes="Bold" TextColor="#312E35"/>
+                <Label Text="Сборка дверей-купе и систем" FontSize="12" TextColor="Gray"/>
+            </VerticalStackLayout>
+
+            <Button Grid.Column="1"
+                    Text="🔄 Обновить"
+                    Clicked="OnRefreshClicked"
+                    BackgroundColor="#E8DEF8"
+                    TextColor="#1D192B"
+                    FontSize="12"
+                    HeightRequest="36"
+                    CornerRadius="8"/>
+        </Grid>
+
+        <!-- ===== TABLE ===== -->
+        <ScrollView Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalScrollBarVisibility="Always">
+
+            <Grid RowDefinitions="Auto,*">
+
+                <!-- ===== COLUMN HEADERS ===== -->
+                <Border Grid.Row="0"
+                        BackgroundColor="#F5F5F5"
+                        StrokeThickness="0"
+                        Padding="10,8"
+                        Margin="0,0,0,5">
+
+                    <Grid ColumnDefinitions="{StaticResource DoorTableColumns}">
+                        <Label Grid.Column="0" Text="" />
+                        <Label Grid.Column="1" Text="Проект" FontSize="11" TextColor="Gray"/>
+                        <Label Grid.Column="2" Text="Инфо" FontSize="11" TextColor="Gray"/>
+                        <Label Grid.Column="3" Text="Дата" FontSize="11" TextColor="Gray" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="4" Text="Взял" FontSize="11" TextColor="Gray" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="5" Text="Готов" FontSize="11" TextColor="Gray" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="6" Text="" />
+                    </Grid>
+                </Border>
+
+                <!-- ===== DATA ===== -->
+                <CollectionView Grid.Row="1"
+                                ItemsSource="{Binding DoorTasks}"
+                                SelectionMode="None">
+
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout VerticalOptions="Center"
+                                             HorizontalOptions="Center"
+                                             Spacing="10">
+                            <Label Text="🚪" FontSize="40" HorizontalTextAlignment="Center"/>
+                            <Label Text="Нет задач по дверям"
+                                   TextColor="Gray"
+                                   HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="local:DoorWorkshopItem">
+                            <Grid>
+                                <Border StrokeThickness="0"
+                                        BackgroundColor="White"
+                                        Margin="0,0,0,8"
+                                        Padding="5,10">
+
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8"/>
+                                    </Border.StrokeShape>
+
+                                    <Grid ColumnDefinitions="{StaticResource DoorTableColumns}"
+                                          VerticalOptions="Center">
+
+                                        <Border Grid.Column="0"
+                                                WidthRequest="30"
+                                                HeightRequest="30"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                BackgroundColor="#FFECB3"
+                                                StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8"/>
+                                            </Border.StrokeShape>
+                                            <Label Text="🚪"
+                                                   FontSize="14"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"/>
+                                        </Border>
+
+                                        <VerticalStackLayout Grid.Column="1"
+                                                             Spacing="0"
+                                                             VerticalOptions="Center"
+                                                             Margin="5,0">
+                                            <Label Text="{Binding ProjectName}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="13"
+                                                   TextColor="#1C1B1F"
+                                                   LineBreakMode="TailTruncation"/>
+                                            <Label Text="{Binding ObjectName}"
+                                                   FontSize="11"
+                                                   TextColor="Gray"
+                                                   LineBreakMode="TailTruncation"/>
+                                        </VerticalStackLayout>
+
+                                        <Label Grid.Column="2"
+                                               Text="{Binding DoorSummary}"
+                                               FontSize="11"
+                                               TextColor="#49454F"
+                                               VerticalOptions="Center"
+                                               LineBreakMode="TailTruncation"/>
+
+                                        <Label Grid.Column="3"
+                                               Text="{Binding CreationDate, StringFormat='{0:dd.MM}'}"
+                                               FontSize="12"
+                                               TextColor="#49454F"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"/>
+
+                                        <CheckBox Grid.Column="4"
+                                                  IsChecked="{Binding IsTaken}"
+                                                  CheckedChanged="OnTaskTakenChecked"
+                                                  HorizontalOptions="Center"
+                                                  VerticalOptions="Center"
+                                                  Color="#6750A4"/>
+
+                                        <CheckBox Grid.Column="5"
+                                                  IsChecked="{Binding IsReady, Mode=OneWay}"
+                                                  CheckedChanged="OnTaskDoneChecked"
+                                                  HorizontalOptions="Center"
+                                                  VerticalOptions="Center"
+                                                  Color="#2E7D32"/>
+
+                                        <Button Grid.Column="6"
+                                                Text="➜"
+                                                Clicked="OnOpenDetailsClicked"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="Transparent"
+                                                TextColor="#6750A4"
+                                                FontSize="18"
+                                                Padding="0"
+                                                HeightRequest="30"
+                                                WidthRequest="30"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentView>

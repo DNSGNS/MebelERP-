@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyApp1.ImagePreviewPage"
+             BackgroundColor="Black"
+             Title="Просмотр фото">
+
+    <Grid>
+        <Image x:Name="FullImage" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+
+        <Button Text="✕" 
+                Clicked="OnCloseClicked"
+                VerticalOptions="Start" HorizontalOptions="End"
+                Margin="20" WidthRequest="50" HeightRequest="50"
+                CornerRadius="25" BackgroundColor="#80000000" TextColor="White" />
+    </Grid>
+</ContentPage>

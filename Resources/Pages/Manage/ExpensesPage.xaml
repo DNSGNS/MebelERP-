@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyApp1"
+             x:Class="MyApp1.ExpensesPage"
+             x:Name="ThisPage"
+             Title="Учет расходов"
+             BackgroundColor="#F0F0F0">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="HeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid RowDefinitions="Auto, Auto, Auto, *, Auto">
+
+            <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Padding="15" BackgroundColor="#2B3C51">
+                <Label Text="РАСХОДЫ" VerticalOptions="Center" FontAttributes="Bold" FontSize="16" TextColor="White"/>
+                <HorizontalStackLayout Grid.Column="1" Spacing="12">
+                    <Button Text="✏️" Clicked="OnEditCategoriesClicked" BackgroundColor="#455A64" TextColor="White" HeightRequest="40" WidthRequest="40" CornerRadius="20"/>
+                    <Button Text="📊" Clicked="OnChartsClicked" BackgroundColor="#455A64" TextColor="White" HeightRequest="40" WidthRequest="40" CornerRadius="20"/>
+                    <Button Text="💾" Clicked="OnSaveClicked" BackgroundColor="#6750A4" TextColor="White" HeightRequest="40" WidthRequest="40" CornerRadius="20"/>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <Border Grid.Row="1" BackgroundColor="White" Margin="10,10,10,0" Padding="10" StrokeShape="RoundRectangle 8" StrokeThickness="0">
+                <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                    <VerticalStackLayout>
+                        <Label Text="Месяц" FontSize="10" TextColor="Gray" Margin="5,0"/>
+                        <Picker ItemsSource="{Binding Months}" 
+                                SelectedIndex="{Binding SelectedMonthIndex}"
+                                WidthRequest="150" FontSize="14" TextColor="#2B3C51"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+                        <Label Text="Год" FontSize="10" TextColor="Gray" Margin="5,0"/>
+                        <Picker ItemsSource="{Binding Years}" 
+                                SelectedItem="{Binding SelectedYear}"
+                                WidthRequest="100" FontSize="14" TextColor="#2B3C51"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border Grid.Row="2" Margin="10,5" Padding="15" BackgroundColor="White" Stroke="#E0E0E0" StrokeShape="RoundRectangle 8">
+                <Grid ColumnDefinitions="*, Auto">
+                    <Label Text="СУММА ПО ФИЛЬТРУ:" TextColor="#2B3C51" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Label Text="{Binding TotalAmount, StringFormat='{0:N0} ₽'}" Grid.Column="1" TextColor="#2B3C51" FontAttributes="Bold" FontSize="20"/>
+                </Grid>
+            </Border>
+
+            <CollectionView Grid.Row="3" ItemsSource="{Binding AllExpenses}" Margin="10,0">
+                <CollectionView.Header>
+                    <Border BackgroundColor="#2B3C51" StrokeThickness="0" StrokeShape="RoundRectangle 8,8,0,0" HeightRequest="40">
+                        <Grid ColumnDefinitions="110, 90, *, 45" Padding="5,0">
+                            <Label Grid.Column="0" Text="Дата" Style="{StaticResource HeaderLabelStyle}"/>
+                            <Label Grid.Column="1" Text="Сумма" Style="{StaticResource HeaderLabelStyle}"/>
+                            <Label Grid.Column="2" Text="Категория" Style="{StaticResource HeaderLabelStyle}"/>
+                            <Label Grid.Column="3" Text="" />
+                        </Grid>
+                    </Border>
+                </CollectionView.Header>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Expense">
+                        <Border Margin="0,0,0,2" BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1">
+                            <Grid ColumnDefinitions="110, 90, *, 45" ColumnSpacing="2">
+                                <DatePicker Grid.Column="0" 
+                                            Date="{Binding Date}" 
+                                            Format="dd.MM.yy"
+                                            DateSelected="OnManualChanged"
+                                            FontSize="12" 
+                                            TextColor="#2B3C51"/>
+                                <Entry Grid.Column="1" 
+                                       Text="{Binding Amount}" 
+                                       Keyboard="Numeric" 
+                                       HorizontalTextAlignment="Center" 
+                                       FontSize="12" 
+                                       TextColor="#2B3C51"
+                                       TextChanged="OnAmountTextChanged"
+                                       Focused="OnEntryFocused"/>
+                                <Picker Grid.Column="2" 
+                                        ItemsSource="{Binding Source={x:Reference ThisPage}, Path=BindingContext.Categories}"
+                                        SelectedItem="{Binding Category}"
+                                        ItemDisplayBinding="{Binding Name}"
+                                        FontSize="12" TextColor="#2B3C51"
+                                        SelectedIndexChanged="OnManualChanged"/>
+                                <Button Grid.Column="3" Text="✕" Clicked="OnDeleteRowClicked" CommandParameter="{Binding .}"
+                                        BackgroundColor="Transparent" TextColor="#C62828" FontSize="16" Padding="0"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Grid.Row="4" Text="+ ДОБАВИТЬ НОВУЮ ЗАПИСЬ" Clicked="OnAddRowClicked"
+                    BackgroundColor="#2B3C51" TextColor="White" Margin="10" CornerRadius="8" HeightRequest="50" FontAttributes="Bold"/>
+        </Grid>
+
+        <Grid BackgroundColor="#80000000" IsVisible="{Binding IsBusy}" x:Name="LoadingOverlay">
+            <ActivityIndicator IsRunning="True" Color="White" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="50" HeightRequest="50"/>
+        </Grid>
+    </Grid>
+</ContentPage>
